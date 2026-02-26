@@ -1,0 +1,35 @@
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Node / web build artifacts
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+.turbo/
+
+# Vercel
+.vercel/
+
+# Supabase local/dev artifacts
+supabase/.temp/
+supabase/.branches/
+
+# TypeScript cache
+*.tsbuildinfo
