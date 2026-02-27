@@ -1,4 +1,5 @@
-import { deleteProjectAction, updateProjectAction } from "@/app/actions/projects";
+import { CreateProjectForm } from "@/app/components/create-project-form";
+import { ProjectRowActions } from "@/app/components/project-row-actions";
 import { getAuthContext } from "@/lib/auth/server-context";
 import { hasDatabaseUrl, hasSupabaseClientEnv } from "@/lib/env";
 import { canManageWorkspaceProjects, readActiveWorkspaceProjects } from "@/lib/projects/service";
@@ -12,6 +13,7 @@ export default async function Home() {
     hasActiveWorkspace &&
     Boolean(auth.activeWorkspaceId) &&
     canManageWorkspaceProjects(auth, auth.activeWorkspaceId ?? "");
+  const canCreateProject = hasDatabaseUrl && canManageActiveWorkspaceProjects;
 
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-16 text-zinc-900">
@@ -90,38 +92,11 @@ export default async function Home() {
                     <span className="font-medium">{project.name}</span>
                     <span className="text-zinc-500">({project.domain})</span>
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <form action={updateProjectAction} className="flex flex-wrap gap-2">
-                      <input type="hidden" name="projectId" value={project.id} />
-                      <input
-                        type="text"
-                        name="name"
-                        defaultValue={project.name}
-                        minLength={2}
-                        maxLength={80}
-                        required
-                        disabled={!canManageActiveWorkspaceProjects}
-                        className="rounded border border-zinc-300 bg-white px-2 py-1 text-xs"
-                      />
-                      <button
-                        type="submit"
-                        disabled={!canManageActiveWorkspaceProjects}
-                        className="rounded bg-zinc-800 px-2 py-1 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
-                      >
-                        Rename
-                      </button>
-                    </form>
-                    <form action={deleteProjectAction}>
-                      <input type="hidden" name="projectId" value={project.id} />
-                      <button
-                        type="submit"
-                        disabled={!canManageActiveWorkspaceProjects}
-                        className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
-                      >
-                        Delete
-                      </button>
-                    </form>
-                  </div>
+                  <ProjectRowActions
+                    projectId={project.id}
+                    projectName={project.name}
+                    canManage={canManageActiveWorkspaceProjects}
+                  />
                 </li>
               ))}
             </ul>
@@ -136,14 +111,20 @@ export default async function Home() {
                     : "No projects found yet in the active workspace."}
             </p>
           )}
+          <div className="mt-6 border-t border-zinc-200 pt-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-600">
+              Create project (server action)
+            </h3>
+            <CreateProjectForm canCreate={canCreateProject} />
+          </div>
         </section>
 
         <section className="rounded-xl border border-zinc-200 bg-white p-6">
           <h2 className="text-lg font-semibold">Next implementation slice</h2>
           <ul className="mt-4 list-disc space-y-2 pl-5 text-zinc-700">
-            <li>Add server actions for create/update project using Drizzle service functions.</li>
-            <li>Apply workspace membership role gates before write operations.</li>
-            <li>Add project service tests for permission and failure scenarios.</li>
+            <li>Add domain uniqueness feedback for duplicate project domains.</li>
+            <li>Add dedicated project dashboard route with pagination.</li>
+            <li>Add integration tests for create/rename/delete server actions.</li>
           </ul>
         </section>
       </main>

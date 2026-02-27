@@ -4,9 +4,20 @@ import { revalidatePath } from "next/cache";
 
 import { getAuthContext } from "@/lib/auth/server-context";
 import {
+  createProjectInActiveWorkspace,
   deleteProjectInActiveWorkspace,
   updateProjectNameInActiveWorkspace,
 } from "@/lib/projects/service";
+
+export type ProjectActionState = {
+  status: "idle" | "success" | "error";
+  message: string;
+};
+
+export const initialProjectActionState: ProjectActionState = {
+  status: "idle",
+  message: "",
+};
 
 const toActionError = (reason: string): string => {
   switch (reason) {
@@ -17,7 +28,7 @@ const toActionError = (reason: string): string => {
     case "forbidden":
       return "You need owner/admin workspace role.";
     case "invalid_input":
-      return "Project name must be between 2 and 80 characters.";
+      return "Enter valid project details (name 2-80 chars, domain like example.com).";
     case "not_found":
       return "Project not found in active workspace.";
     default:
@@ -25,27 +36,52 @@ const toActionError = (reason: string): string => {
   }
 };
 
-export const updateProjectAction = async (formData: FormData): Promise<void> => {
+export const createProjectAction = async (
+  _previousState: ProjectActionState,
+  formData: FormData,
+): Promise<ProjectActionState> => {
+  const auth = await getAuthContext();
+  const name = String(formData.get("name") ?? "");
+  const domain = String(formData.get("domain") ?? "");
+
+  const result = await createProjectInActiveWorkspace(auth, { name, domain });
+  if (!result.ok) {
+    return { status: "error", message: toActionError(result.reason) };
+  }
+
+  revalidatePath("/");
+  return { status: "success", message: `Created project ${result.project.name}.` };
+};
+
+export const updateProjectAction = async (
+  _previousState: ProjectActionState,
+  formData: FormData,
+): Promise<ProjectActionState> => {
   const auth = await getAuthContext();
   const projectId = String(formData.get("projectId") ?? "");
   const name = String(formData.get("name") ?? "");
 
   const result = await updateProjectNameInActiveWorkspace(auth, { projectId, name });
   if (!result.ok) {
-    throw new Error(toActionError(result.reason));
+    return { status: "error", message: toActionError(result.reason) };
   }
 
   revalidatePath("/");
+  return { status: "success", message: "Project renamed." };
 };
 
-export const deleteProjectAction = async (formData: FormData): Promise<void> => {
+export const deleteProjectAction = async (
+  _previousState: ProjectActionState,
+  formData: FormData,
+): Promise<ProjectActionState> => {
   const auth = await getAuthContext();
   const projectId = String(formData.get("projectId") ?? "");
 
   const result = await deleteProjectInActiveWorkspace(auth, projectId);
   if (!result.ok) {
-    throw new Error(toActionError(result.reason));
+    return { status: "error", message: toActionError(result.reason) };
   }
 
   revalidatePath("/");
+  return { status: "success", message: "Project deleted." };
 };

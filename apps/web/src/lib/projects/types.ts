@@ -17,7 +17,12 @@ export type CreateProjectServiceResult =
   | { ok: true; project: ProjectSummary }
   | {
       ok: false;
-      reason: "unauthenticated" | "no_active_workspace" | "forbidden" | "db_unavailable";
+      reason:
+        | "unauthenticated"
+        | "no_active_workspace"
+        | "forbidden"
+        | "invalid_input"
+        | "db_unavailable";
     };
 
 export type UpdateProjectInput = {
