@@ -45,9 +45,9 @@ PM, engineering, QA, and stakeholders tracking week-1 progress.
 - [x] Add standard README/setup instructions for contributors.
 
 ### Data and Tenancy
-- [ ] Implement base schema and migration pipeline.
-- [ ] Add RLS policies on initial tenant tables.
-- [ ] Create minimum policy tests and QA checks.
+- [x] Implement base schema and migration pipeline.
+- [x] Add RLS policies on initial tenant tables.
+- [x] Create minimum policy tests and QA checks.
 
 ### Delivery and Operations
 - [x] Add CI workflows and required status checks.

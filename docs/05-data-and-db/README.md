@@ -15,11 +15,13 @@ Document Supabase schema strategy, tenancy safety, migration practice, and data 
 - `rls-policy-strategy.md`
 - `migration-strategy.md`
 - `retention-and-cost-controls.md`
+- `day2-initial-schema-and-rls-baseline.md`
 
 ## Key Docs
 - [`supabase-schema-plan.md`](supabase-schema-plan.md)
 - [`rls-policy-strategy.md`](rls-policy-strategy.md)
 - [`migration-strategy.md`](migration-strategy.md)
+- [`day2-initial-schema-and-rls-baseline.md`](day2-initial-schema-and-rls-baseline.md)
 
 ## Standard Outline For Each Document
 1. Purpose and audience
