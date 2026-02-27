@@ -1,0 +1,132 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag (example: v0.2.0)"
+        required: true
+        type: string
+      target_branch:
+        description: "Branch to tag and release from"
+        required: true
+        default: "main"
+        type: string
+      prerelease:
+        description: "Mark as pre-release"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    name: prepare release ref
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.set.outputs.tag }}
+      ref: ${{ steps.set.outputs.ref }}
+    steps:
+      - name: Set release ref for tag push
+        id: set-push
+        if: github.event_name == 'push'
+        run: |
+          echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          echo "ref=${GITHUB_REF}" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag from workflow dispatch
+        id: set-dispatch
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const version = "${{ inputs.version }}".trim();
+            const targetBranch = "${{ inputs.target_branch }}".trim();
+            const semverTag = /^v\d+\.\d+\.\d+$/;
+            if (!semverTag.test(version)) {
+              core.setFailed(`Invalid version tag "${version}". Use format vX.Y.Z`);
+              return;
+            }
+
+            const { owner, repo } = context.repo;
+            const branch = await github.rest.repos.getBranch({
+              owner,
+              repo,
+              branch: targetBranch,
+            });
+            const sha = branch.data.commit.sha;
+
+            await github.rest.git.createRef({
+              owner,
+              repo,
+              ref: `refs/tags/${version}`,
+              sha,
+            });
+
+            core.setOutput("tag", version);
+            core.setOutput("ref", `refs/tags/${version}`);
+
+      - name: Export selected ref
+        id: set
+        run: |
+          TAG="${{ steps.set-push.outputs.tag }}"
+          REF="${{ steps.set-push.outputs.ref }}"
+          if [ -z "$TAG" ]; then TAG="${{ steps.set-dispatch.outputs.tag }}"; fi
+          if [ -z "$REF" ]; then REF="${{ steps.set-dispatch.outputs.ref }}"; fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
+
+  verify:
+    name: verify release build
+    runs-on: ubuntu-latest
+    needs: prepare
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.ref }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install web dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Lint web app
+        run: bun run lint
+
+      - name: Typecheck web app
+        run: bun run typecheck
+
+      - name: Test web app
+        run: bun run test:run
+
+      - name: Build web app
+        run: bun run build
+
+  publish:
+    name: publish github release
+    runs-on: ubuntu-latest
+    needs: [prepare, verify]
+    steps:
+      - name: Publish release from tag
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.prepare.outputs.tag }}
+          generate_release_notes: true
+          append_body: true
+          prerelease: ${{ github.event_name == 'workflow_dispatch' && inputs.prerelease }}
+          body: |
+            ## Deployment Notes
+            - Built from the tag commit after CI verification.
+            - Review migration and rollback instructions before production deploy.
