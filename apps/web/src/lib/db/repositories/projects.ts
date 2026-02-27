@@ -12,6 +12,21 @@ type InsertProjectParams = {
   domain: string;
 };
 
+export type CreateWorkspaceProjectResult =
+  | { status: "created"; project: ProjectSummary }
+  | { status: "domain_conflict" }
+  | { status: "db_unavailable" };
+
+const isProjectDomainConflict = (error: unknown): boolean => {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+
+  const code = "code" in error ? String(error.code) : "";
+  const constraint = "constraint" in error ? String(error.constraint) : "";
+  return code === "23505" && constraint === "projects_workspace_id_domain_key";
+};
+
 const projectSelect = {
   id: projects.id,
   agencyId: projects.agencyId,
@@ -46,10 +61,10 @@ export const readWorkspaceProjects = async (
 
 export const createWorkspaceProject = async (
   params: InsertProjectParams,
-): Promise<ProjectSummary | null> => {
+): Promise<CreateWorkspaceProjectResult> => {
   const db = getDb();
   if (!db) {
-    return null;
+    return { status: "db_unavailable" };
   }
 
   try {
@@ -64,9 +79,18 @@ export const createWorkspaceProject = async (
       })
       .returning(projectSelect);
 
-    return rows[0] ?? null;
-  } catch {
-    return null;
+    const project = rows[0];
+    if (!project) {
+      return { status: "db_unavailable" };
+    }
+
+    return { status: "created", project };
+  } catch (error) {
+    if (isProjectDomainConflict(error)) {
+      return { status: "domain_conflict" };
+    }
+
+    return { status: "db_unavailable" };
   }
 };
 

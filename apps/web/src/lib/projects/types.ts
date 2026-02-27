@@ -22,6 +22,7 @@ export type CreateProjectServiceResult =
         | "no_active_workspace"
         | "forbidden"
         | "invalid_input"
+        | "domain_conflict"
         | "db_unavailable";
     };
 

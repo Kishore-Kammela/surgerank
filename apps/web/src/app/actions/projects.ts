@@ -29,6 +29,8 @@ const toActionError = (reason: string): string => {
       return "You need owner/admin workspace role.";
     case "invalid_input":
       return "Enter valid project details (name 2-80 chars, domain like example.com).";
+    case "domain_conflict":
+      return "A project with this domain already exists in the active workspace.";
     case "not_found":
       return "Project not found in active workspace.";
     default:
