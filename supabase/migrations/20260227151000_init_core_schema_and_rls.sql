@@ -126,6 +126,19 @@ alter table public.agency_memberships enable row level security;
 alter table public.workspace_memberships enable row level security;
 alter table public.projects enable row level security;
 
+do $$
+begin
+  if exists (select 1 from pg_roles where rolname = 'authenticated') then
+    grant usage on schema public to authenticated;
+    grant select, insert, update, delete on public.agencies to authenticated;
+    grant select, insert, update, delete on public.workspaces to authenticated;
+    grant select, insert, update, delete on public.agency_memberships to authenticated;
+    grant select, insert, update, delete on public.workspace_memberships to authenticated;
+    grant select, insert, update, delete on public.projects to authenticated;
+  end if;
+end
+$$;
+
 -- Agency visibility
 create policy "agency members can read agencies"
 on public.agencies

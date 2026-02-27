@@ -43,6 +43,7 @@ Capture the first Supabase migration and tenant isolation baseline delivered for
 - [ ] Membership constraints prevent duplicate membership rows.
 
 ## Follow-up (Day 3+)
-- Add Supabase local test harness (`supabase db test`) for automated policy checks.
-- Add service-role-only operations documentation for backend jobs.
-- Extend schema to `property`, `audit_run`, and `ranking_snapshot` after baseline validation.
+- [x] Add executable SQL-based RLS assertions for CI (`supabase/tests/rls_policy_assertions.sql`).
+- [x] Add DB validation workflow (`.github/workflows/db-rls.yml`).
+- [ ] Add service-role-only operations documentation for backend jobs.
+- [ ] Extend schema to `property`, `audit_run`, and `ranking_snapshot` after baseline validation.

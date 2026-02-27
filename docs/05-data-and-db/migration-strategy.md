@@ -24,6 +24,18 @@ Engineering, DevOps, QA.
 4. Apply to dev environment.
 5. Apply to production with approval gate.
 
+## Current Validation Pipeline
+- Workflow: `.github/workflows/db-rls.yml`
+  - Boots a clean PostgreSQL service in CI.
+  - Applies `supabase/migrations/*.sql` in order.
+  - Executes RLS assertions in `supabase/tests/rls_policy_assertions.sql`.
+- Local bootstrap helper: `supabase/tests/bootstrap_auth_schema.sql`
+  - Creates minimal `auth` schema/function surface required for RLS checks.
+- Expected behavior:
+  - cross-tenant reads are denied
+  - cross-tenant writes are denied
+  - agency/workspace mismatch writes are rejected
+
 ## Safety Rules
 - No untracked dashboard schema edits.
 - Backward-compatible changes first.

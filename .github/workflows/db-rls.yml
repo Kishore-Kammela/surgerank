@@ -1,0 +1,62 @@
+name: db rls checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  db-rls-validation:
+    name: db migration and rls validation
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGPASSWORD: postgres
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGDATABASE: postgres
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Wait for Postgres
+        run: |
+          for i in {1..20}; do
+            pg_isready -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" && exit 0
+            sleep 2
+          done
+          echo "Postgres did not become ready in time"
+          exit 1
+
+      - name: Bootstrap auth schema for local checks
+        run: psql -v ON_ERROR_STOP=1 -f "supabase/tests/bootstrap_auth_schema.sql"
+
+      - name: Apply migrations
+        run: |
+          for file in supabase/migrations/*.sql; do
+            echo "Applying $file"
+            psql -v ON_ERROR_STOP=1 -f "$file"
+          done
+
+      - name: Run RLS policy assertions
+        run: psql -v ON_ERROR_STOP=1 -f "supabase/tests/rls_policy_assertions.sql"
