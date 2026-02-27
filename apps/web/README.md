@@ -28,9 +28,19 @@ Create `apps/web/.env.local` from `apps/web/.env.example` and set:
 - `DATABASE_URL` (for Drizzle query layer)
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_PRICE_ID_STARTER`
+- `STRIPE_PRICE_ID_PRO`
+- `STRIPE_PRICE_ID_SCALE`
 - `RAZORPAY_KEY_ID`
 - `RAZORPAY_KEY_SECRET`
 - `RAZORPAY_WEBHOOK_SECRET`
+
+### Week 4 Billing Endpoints (Baseline)
+
+- `POST /api/billing/stripe/checkout`
+  - Creates Stripe checkout session for `starter | pro | scale` plan codes.
+- `POST /api/billing/stripe/webhook`
+  - Verifies Stripe webhook signatures and routes core subscription events.
 
 ## Quality Commands
 
