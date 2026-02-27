@@ -43,3 +43,11 @@ export type ProjectMutationServiceResult =
         | "not_found"
         | "db_unavailable";
     };
+
+export type ProjectsPageResult = {
+  projects: ProjectSummary[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};
