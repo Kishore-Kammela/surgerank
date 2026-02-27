@@ -26,6 +26,11 @@ Create `apps/web/.env.local` from `apps/web/.env.example` and set:
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `DATABASE_URL` (for Drizzle query layer)
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `RAZORPAY_KEY_ID`
+- `RAZORPAY_KEY_SECRET`
+- `RAZORPAY_WEBHOOK_SECRET`
 
 ## Quality Commands
 
