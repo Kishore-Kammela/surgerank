@@ -14,6 +14,7 @@ Define Week 2 execution after Week 1 foundations, focused on auth wiring, tenant
 - Week 2 goal is a usable authenticated tenant flow, not broad feature expansion.
 - Auth and tenancy enforcement are release-critical and must stay server-side.
 - Deliver one narrow end-to-end slice: sign in -> tenant context -> workspace/project shell.
+- Drizzle and Stripe are accepted scope additions but phased to Week 3/4 to avoid destabilizing Week 2 delivery.
 
 ## Week 2 Objectives
 
@@ -54,6 +55,11 @@ Define Week 2 execution after Week 1 foundations, focused on auth wiring, tenant
 - [ ] Add tests for auth redirects and tenant context loading.
 - [ ] Add logging hooks for auth/session boundary errors.
 - [ ] Update decision log and risk register with Week 2 findings.
+
+### Accepted Scope Additions (Phased)
+- [ ] Week 3: Introduce Drizzle ORM query layer aligned with existing Supabase SQL migrations.
+- [ ] Week 4: Introduce Stripe subscription flow (checkout, webhook sync, billing portal).
+- [ ] Add plan enforcement checks tied to subscription status and workspace/usage limits.
 
 ## Risk Watch (Week 2)
 
