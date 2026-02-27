@@ -14,14 +14,16 @@
     "format:check": "prettier --check .",
     "lint-staged": "lint-staged",
     "hooks:install": "bash ./scripts/install-hooks.sh",
-    "commitlint:range": "bunx commitlint --config ../../commitlint.config.cjs --from origin/main --to HEAD",
+    "commitlint:range": "bunx commitlint --config ./commitlint.config.cjs --from origin/main --to HEAD",
     "prepush:check": "bun run commitlint:range && bun run lint && bun run typecheck && bun run test:run && bun run build",
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.98.0",
+    "drizzle-orm": "^0.45.1",
     "next": "16.1.6",
+    "postgres": "^3.4.8",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
@@ -34,6 +36,7 @@
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.9",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "jsdom": "^28",
@@ -55,6 +58,6 @@
   "simple-git-hooks": {
     "pre-commit": "cd apps/web && bun run lint-staged",
     "pre-push": "cd apps/web && bun run prepush:check",
-    "commit-msg": "cd apps/web && bunx commitlint --config ../../commitlint.config.cjs --edit $1"
+    "commit-msg": "MSG_FILE=\"$1\"; case \"$MSG_FILE\" in /*) ;; *) MSG_FILE=\"$(git rev-parse --show-toplevel)/$MSG_FILE\" ;; esac; cd apps/web && bunx commitlint --config ./commitlint.config.cjs --edit \"$MSG_FILE\""
   }
 }

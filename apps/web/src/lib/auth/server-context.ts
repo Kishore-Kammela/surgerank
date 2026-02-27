@@ -2,6 +2,10 @@ import { cache } from "react";
 
 import type { AuthContext, AgencyMembership, WorkspaceMembership } from "@/lib/auth/types";
 import { hasSupabaseClientEnv } from "@/lib/env";
+import {
+  readAgencyMembershipsByUserId,
+  readWorkspaceMembershipsByUserId,
+} from "@/lib/db/repositories/memberships";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const readAgencyMemberships = async (userId: string): Promise<AgencyMembership[]> => {
@@ -66,10 +70,13 @@ export const getAuthContext = cache(async (): Promise<AuthContext> => {
     };
   }
 
-  const [agencyMemberships, workspaceMemberships] = await Promise.all([
-    readAgencyMemberships(user.id),
-    readWorkspaceMemberships(user.id),
+  const drizzleMemberships = await Promise.all([
+    readAgencyMembershipsByUserId(user.id),
+    readWorkspaceMembershipsByUserId(user.id),
   ]);
+
+  const agencyMemberships = drizzleMemberships[0] ?? (await readAgencyMemberships(user.id));
+  const workspaceMemberships = drizzleMemberships[1] ?? (await readWorkspaceMemberships(user.id));
 
   return {
     userId: user.id,
