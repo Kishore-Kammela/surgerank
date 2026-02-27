@@ -51,7 +51,7 @@ PM, engineering, QA, and stakeholders tracking week-1 progress.
 
 ### Delivery and Operations
 - [x] Add CI workflows and required status checks.
-- [ ] Configure preview/development deployment flow.
+- [x] Configure preview/development deployment flow.
 - [ ] Validate release and rollback runbook steps against baseline deploy.
 
 ## Dependency Map
