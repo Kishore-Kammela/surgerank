@@ -43,6 +43,7 @@ module.exports = {
         "seo",
         "geo",
         "reporting",
+        "scope",
         "docs",
         "test",
         "qa",
