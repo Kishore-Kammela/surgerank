@@ -68,11 +68,15 @@ export const createProjectInActiveWorkspace = async (
     domain,
   });
 
-  if (!project) {
+  if (project.status === "domain_conflict") {
+    return { ok: false, reason: "domain_conflict" };
+  }
+
+  if (project.status === "db_unavailable") {
     return { ok: false, reason: "db_unavailable" };
   }
 
-  return { ok: true, project };
+  return { ok: true, project: project.project };
 };
 
 export const updateProjectNameInActiveWorkspace = async (
