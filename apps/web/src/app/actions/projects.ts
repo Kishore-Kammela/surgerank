@@ -12,6 +12,8 @@ import {
 export type ProjectActionState = {
   status: "idle" | "success" | "error";
   message: string;
+  ctaHref?: string;
+  ctaLabel?: string;
 };
 
 export const initialProjectActionState: ProjectActionState = {
@@ -50,6 +52,14 @@ export const createProjectAction = async (
 
   const result = await createProjectInActiveWorkspace(auth, { name, domain });
   if (!result.ok) {
+    if (result.reason === "plan_required") {
+      return {
+        status: "error",
+        message: toActionError(result.reason),
+        ctaHref: "/billing",
+        ctaLabel: "Upgrade now",
+      };
+    }
     return { status: "error", message: toActionError(result.reason) };
   }
 

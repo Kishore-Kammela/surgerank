@@ -86,6 +86,28 @@ describe("project server actions", () => {
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
+  it("createProjectAction returns upgrade CTA when plan is required", async () => {
+    vi.spyOn(projectService, "createProjectInActiveWorkspace").mockResolvedValue({
+      ok: false,
+      reason: "plan_required",
+    });
+
+    const formData = new FormData();
+    formData.set("name", "Demo");
+    formData.set("domain", "demo.com");
+
+    const result = await createProjectAction(initialProjectActionState, formData);
+
+    expect(result).toEqual({
+      status: "error",
+      message:
+        "Upgrade to an active paid plan to create additional projects. Open /billing to continue.",
+      ctaHref: "/billing",
+      ctaLabel: "Upgrade now",
+    });
+    expect(revalidatePath).not.toHaveBeenCalled();
+  });
+
   it("updateProjectAction returns success and revalidates", async () => {
     vi.spyOn(projectService, "updateProjectNameInActiveWorkspace").mockResolvedValue({
       ok: true,
