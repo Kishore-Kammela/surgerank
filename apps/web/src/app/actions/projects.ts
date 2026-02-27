@@ -32,7 +32,7 @@ const toActionError = (reason: string): string => {
     case "domain_conflict":
       return "A project with this domain already exists in the active workspace.";
     case "plan_required":
-      return "Upgrade to an active paid plan to create additional projects.";
+      return "Upgrade to an active paid plan to create additional projects. Open /billing to continue.";
     case "not_found":
       return "Project not found in active workspace.";
     default:

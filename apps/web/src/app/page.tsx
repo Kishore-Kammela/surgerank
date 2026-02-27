@@ -22,7 +22,7 @@ export default async function Home() {
         <header className="space-y-3">
           <p className="text-sm font-medium uppercase tracking-wide text-zinc-500">SurgeRank</p>
           <h1 className="text-3xl font-semibold tracking-tight">
-            Week 3 Drizzle Service Layer Baseline
+            Week 4 Billing + Plan Enforcement
           </h1>
           <p className="max-w-3xl text-zinc-600">
             This slice keeps auth and tenancy context from Week 2 and adds typed Drizzle repository
@@ -91,6 +91,12 @@ export default async function Home() {
           >
             Open projects dashboard
           </Link>
+          <Link
+            href="/billing"
+            className="mt-2 ml-4 inline-block text-sm font-medium text-zinc-700 underline"
+          >
+            Open billing
+          </Link>
           {projects.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-zinc-700">
               {projects.slice(0, 5).map((project) => (
@@ -129,9 +135,9 @@ export default async function Home() {
         <section className="rounded-xl border border-zinc-200 bg-white p-6">
           <h2 className="text-lg font-semibold">Next implementation slice</h2>
           <ul className="mt-4 list-disc space-y-2 pl-5 text-zinc-700">
-            <li>Add domain uniqueness feedback for duplicate project domains.</li>
-            <li>Add dedicated project dashboard route with pagination.</li>
-            <li>Add integration tests for create/rename/delete server actions.</li>
+            <li>Persist checkout return state and improve billing UX feedback.</li>
+            <li>Add subscription management actions (cancel/resume/portal) per provider.</li>
+            <li>Add webhook-focused tests for normalized billing events and idempotency.</li>
           </ul>
         </section>
       </main>
