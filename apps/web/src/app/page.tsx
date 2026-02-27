@@ -1,11 +1,12 @@
 import { getAuthContext } from "@/lib/auth/server-context";
-import { hasSupabaseClientEnv } from "@/lib/env";
+import { hasDatabaseUrl, hasSupabaseClientEnv } from "@/lib/env";
 import { readActiveWorkspaceProjects } from "@/lib/projects/service";
 
 export default async function Home() {
   const auth = await getAuthContext();
   const signedIn = Boolean(auth.userId);
   const projects = await readActiveWorkspaceProjects(auth);
+  const hasActiveWorkspace = Boolean(auth.activeAgencyId && auth.activeWorkspaceId);
 
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-16 text-zinc-900">
@@ -62,6 +63,19 @@ export default async function Home() {
 
         <section className="rounded-xl border border-zinc-200 bg-white p-6">
           <h2 className="text-lg font-semibold">Active workspace projects (Drizzle read path)</h2>
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            <p className="rounded-md bg-zinc-100 px-3 py-2 text-xs text-zinc-700">
+              DATABASE_URL:{" "}
+              <span className="font-semibold">{hasDatabaseUrl ? "Configured" : "Missing"}</span>
+            </p>
+            <p className="rounded-md bg-zinc-100 px-3 py-2 text-xs text-zinc-700">
+              Signed in: <span className="font-semibold">{signedIn ? "Yes" : "No"}</span>
+            </p>
+            <p className="rounded-md bg-zinc-100 px-3 py-2 text-xs text-zinc-700">
+              Active workspace:{" "}
+              <span className="font-semibold">{hasActiveWorkspace ? "Yes" : "No"}</span>
+            </p>
+          </div>
           <p className="mt-2 text-sm text-zinc-500">Projects loaded: {projects.length}</p>
           {projects.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-zinc-700">
@@ -74,7 +88,13 @@ export default async function Home() {
             </ul>
           ) : (
             <p className="mt-3 text-sm text-zinc-600">
-              No projects found yet for the active workspace, or `DATABASE_URL` is not configured.
+              {!hasDatabaseUrl
+                ? "DATABASE_URL is missing, so Drizzle project reads are disabled."
+                : !signedIn
+                  ? "No projects loaded yet because you are signed out."
+                  : !hasActiveWorkspace
+                    ? "No projects loaded yet because there is no active workspace context."
+                    : "No projects found yet in the active workspace."}
             </p>
           )}
         </section>
