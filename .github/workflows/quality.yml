@@ -42,6 +42,10 @@ jobs:
         working-directory: apps/web
         run: bun install --frozen-lockfile
 
+      - name: Format check web app
+        working-directory: apps/web
+        run: bun run format:check
+
       - name: Lint web app
         working-directory: apps/web
         run: bun run lint

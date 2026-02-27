@@ -17,6 +17,7 @@ Engineering, security, QA.
 - V1 uses shared-schema multi-tenancy in Supabase/Postgres.
 - Tenant safety is enforced with key design (`agency_id`, `workspace_id`), RLS policies, and test coverage.
 - Access is denied by default unless membership is explicitly valid.
+- Application data access uses Drizzle ORM query layer over Supabase/Postgres while SQL migrations remain authoritative in `supabase/migrations`.
 
 ## Tenancy Model
 - Agency account as top-level tenant boundary.
@@ -63,3 +64,8 @@ Engineering, security, QA.
 - Policy tests for cross-tenant denial.
 - Integration tests for authorization and data visibility.
 - Regression tests for role changes and workspace access transitions.
+
+## ORM and Migration Contract
+- Drizzle is used for typed query construction and repository/service code ergonomics.
+- Schema and policy migrations remain SQL-first under `supabase/migrations`.
+- Any Drizzle schema representation must mirror applied SQL migrations; migration ownership does not move to Drizzle.

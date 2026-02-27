@@ -46,6 +46,14 @@ All project roles.
 | SD-004 | Canonical pricing baseline set to `500/2000/10000` keyword limits and GEO in Pro+ | Resolve contradictions across legacy scope docs | PM/Founder | After design-partner pricing validation cycle |
 | SD-005 | Decommission legacy `scope/*.docx` after scope package sign-off | Avoid dual-source scope drift | PM | If legal/compliance requires archived originals elsewhere |
 
+## Architecture and Monetization Decisions (2026-02-27)
+
+| Decision ID | Decision | Rationale | Owner | Revisit Trigger |
+| --- | --- | --- | --- | --- |
+| AD-006 | Adopt Drizzle ORM as application query layer while keeping `supabase/migrations` as schema source of truth | Improve typed data access in app code without splitting migration ownership | Engineering | If migration/tooling friction appears between Drizzle schema and SQL migrations |
+| AD-007 | Integrate Stripe as V1 payment provider for subscription checkout, webhook sync, and plan enforcement | Fastest reliable path for recurring SaaS billing and customer portal flows | PM/Engineering | If regional payment requirements require additional providers |
+| AD-008 | Phase rollout: finish Week 2 auth/tenant baseline first, then implement Drizzle (Week 3) and payments (Week 4) | Reduces delivery risk by not combining auth, tenancy, and billing changes in one sprint | PM | If launch timeline or design-partner feedback requires reprioritization |
+
 ## Required Decision Types
 - Scope and priority changes
 - Architecture and stack decisions

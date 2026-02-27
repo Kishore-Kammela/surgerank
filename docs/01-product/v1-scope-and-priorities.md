@@ -45,6 +45,8 @@ Developers, QA, PM, and business stakeholders.
   - setup, overlap, rank comparison snapshot
 - Limited GEO module:
   - query set setup, 1-2 engines, citation/mention trend and evidence snapshot
+- Monetization integration:
+  - Stripe checkout + subscription status sync + basic customer billing portal
 
 ## Deferred (V2+)
 - White-label platform and client-facing portal.
@@ -65,3 +67,11 @@ Developers, QA, PM, and business stakeholders.
 - Final pricing/package limits by plan tier.
 - Exact initial GEO engine pair for launch.
 - Final partner cohort size for beta wave 1.
+
+## Scope Change Notes (2026-02-27)
+- Drizzle ORM adopted for typed query access in app code.
+- Stripe selected as canonical V1 payment integration provider.
+- Delivery sequencing adjusted to protect current momentum:
+  - Week 2: auth + tenancy baseline
+  - Week 3: Drizzle integration on top of existing Supabase SQL migrations
+  - Week 4: Stripe subscription and billing flow

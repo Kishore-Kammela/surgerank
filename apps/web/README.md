@@ -42,7 +42,19 @@ Hooks are managed by `simple-git-hooks` from `package.json`:
 
 - `pre-commit`: format/lint staged files
 - `commit-msg`: commitlint validation
-- `pre-push`: lint + typecheck + tests + build
+- `pre-push`: commitlint range + lint + typecheck + tests + build
+
+If hooks are not installed yet, run:
+
+```bash
+bun run prepare
+```
+
+If auto-install fails on your machine, run the fallback installer:
+
+```bash
+bun run hooks:install
+```
 
 ## Notes
 

@@ -44,6 +44,7 @@ Define V1 schema strategy and constraints for multi-tenant agency/workspace oper
 - Migrations only via `supabase/migrations`.
 - CI dry-run for schema changes.
 - Policy tests for cross-tenant denial.
+- Drizzle schema/types can be used for application query safety but must mirror SQL migrations (not replace them).
 
 ## Data Quality Controls
 - Enforce idempotency keys for ingestion runs where applicable.
