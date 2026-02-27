@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Apply labels by title and changed files
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const owner = context.repo.owner;
