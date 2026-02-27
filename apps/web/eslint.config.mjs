@@ -11,10 +11,7 @@ const eslintConfig = defineConfig([
       "no-debugger": "error",
       "no-var": "error",
       "prefer-const": "error",
-      "@typescript-eslint/consistent-type-imports": [
-        "warn",
-        { fixStyle: "separate-type-imports" },
-      ],
+      "@typescript-eslint/consistent-type-imports": ["warn", { fixStyle: "separate-type-imports" }],
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": [
         "warn",

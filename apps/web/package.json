@@ -8,10 +8,12 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint-staged": "lint-staged",
-    "prepush:check": "bun run lint && bun run typecheck && bun run build",
+    "prepush:check": "bun run lint && bun run typecheck && bun run test:run && bun run build",
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
@@ -23,16 +25,20 @@
     "@commitlint/cli": "^19",
     "@commitlint/config-conventional": "^19",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6",
+    "@testing-library/react": "^16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "jsdom": "^27",
     "lint-staged": "^16",
     "prettier": "^3",
     "simple-git-hooks": "^2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,md,yml,yaml}": [
