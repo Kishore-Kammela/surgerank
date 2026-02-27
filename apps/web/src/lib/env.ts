@@ -14,6 +14,9 @@ export const serverEnv = {
   RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID ?? "",
   RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET ?? "",
   RAZORPAY_WEBHOOK_SECRET: process.env.RAZORPAY_WEBHOOK_SECRET ?? "",
+  RAZORPAY_PLAN_AMOUNT_STARTER_INR: process.env.RAZORPAY_PLAN_AMOUNT_STARTER_INR ?? "",
+  RAZORPAY_PLAN_AMOUNT_PRO_INR: process.env.RAZORPAY_PLAN_AMOUNT_PRO_INR ?? "",
+  RAZORPAY_PLAN_AMOUNT_SCALE_INR: process.env.RAZORPAY_PLAN_AMOUNT_SCALE_INR ?? "",
 } as const;
 
 export const hasSupabaseClientEnv =
@@ -33,3 +36,8 @@ export const hasRazorpayEnv =
   serverEnv.RAZORPAY_KEY_ID.length > 0 &&
   serverEnv.RAZORPAY_KEY_SECRET.length > 0 &&
   serverEnv.RAZORPAY_WEBHOOK_SECRET.length > 0;
+
+export const hasRazorpayPlanAmounts =
+  serverEnv.RAZORPAY_PLAN_AMOUNT_STARTER_INR.length > 0 &&
+  serverEnv.RAZORPAY_PLAN_AMOUNT_PRO_INR.length > 0 &&
+  serverEnv.RAZORPAY_PLAN_AMOUNT_SCALE_INR.length > 0;

@@ -34,6 +34,9 @@ Create `apps/web/.env.local` from `apps/web/.env.example` and set:
 - `RAZORPAY_KEY_ID`
 - `RAZORPAY_KEY_SECRET`
 - `RAZORPAY_WEBHOOK_SECRET`
+- `RAZORPAY_PLAN_AMOUNT_STARTER_INR` (minor unit, paise)
+- `RAZORPAY_PLAN_AMOUNT_PRO_INR` (minor unit, paise)
+- `RAZORPAY_PLAN_AMOUNT_SCALE_INR` (minor unit, paise)
 
 ### Week 4 Billing Endpoints (Baseline)
 
@@ -41,6 +44,10 @@ Create `apps/web/.env.local` from `apps/web/.env.example` and set:
   - Creates Stripe checkout session for `starter | pro | scale` plan codes.
 - `POST /api/billing/stripe/webhook`
   - Verifies Stripe webhook signatures and routes core subscription events.
+- `POST /api/billing/razorpay/checkout`
+  - Creates Razorpay order payload for `starter | pro | scale` plan codes.
+- `POST /api/billing/razorpay/webhook`
+  - Verifies Razorpay webhook signatures and routes core billing events.
 
 ## Quality Commands
 
