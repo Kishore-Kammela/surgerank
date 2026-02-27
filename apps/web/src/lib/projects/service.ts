@@ -1,4 +1,5 @@
 import type { AuthContext, WorkspaceMembership } from "@/lib/auth/types";
+import { readWorkspaceBillingSubscription } from "@/lib/db/repositories/billing";
 import {
   createWorkspaceProject,
   deleteWorkspaceProject,
@@ -22,6 +23,17 @@ const normalizeDomain = (domain: string): string => {
   const trimmed = domain.trim().toLowerCase();
   const withoutProtocol = trimmed.replace(/^https?:\/\//, "");
   return withoutProtocol.split("/")[0] ?? "";
+};
+
+const isActiveSubscriptionStatus = (status: string): boolean => {
+  const normalized = status.trim().toLowerCase();
+  return (
+    normalized === "active" ||
+    normalized === "trialing" ||
+    normalized === "subscription.activated" ||
+    normalized === "subscription.charged" ||
+    normalized === "payment.captured"
+  );
 };
 
 export const canManageWorkspaceProjects = (auth: AuthContext, workspaceId: string): boolean => {
@@ -105,6 +117,29 @@ export const createProjectInActiveWorkspace = async (
   const domain = normalizeDomain(input.domain);
   if (name.length < 2 || name.length > 80 || !DOMAIN_PATTERN.test(domain)) {
     return { ok: false, reason: "invalid_input" };
+  }
+
+  // Plan enforcement baseline:
+  // - first project can be created without a subscription
+  // - additional projects require active subscription state
+  const projectPage = await readWorkspaceProjectsPage(
+    auth.activeAgencyId,
+    auth.activeWorkspaceId,
+    1,
+    1,
+  );
+  if (!projectPage) {
+    return { ok: false, reason: "db_unavailable" };
+  }
+
+  if (projectPage.totalCount >= 1) {
+    const subscription = await readWorkspaceBillingSubscription(auth.activeWorkspaceId);
+    if (subscription === "db_unavailable") {
+      return { ok: false, reason: "db_unavailable" };
+    }
+    if (!subscription || !isActiveSubscriptionStatus(subscription.status)) {
+      return { ok: false, reason: "plan_required" };
+    }
   }
 
   const project = await createWorkspaceProject({

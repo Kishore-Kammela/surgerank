@@ -23,6 +23,7 @@ export type CreateProjectServiceResult =
         | "forbidden"
         | "invalid_input"
         | "domain_conflict"
+        | "plan_required"
         | "db_unavailable";
     };
 
