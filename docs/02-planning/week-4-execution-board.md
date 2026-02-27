@@ -37,17 +37,17 @@ Define Week 4 implementation for billing and plan enforcement using Stripe + Raz
 ## Workstream Backlog (Week 4)
 
 ### Billing Providers
-- [ ] Add provider-neutral billing interface in app layer.
-- [ ] Add Stripe provider implementation and test-mode setup.
-- [ ] Add Razorpay provider implementation and test-mode setup.
+- [x] Add provider-neutral billing interface in app layer.
+- [x] Add Stripe provider implementation and test-mode setup.
+- [x] Add Razorpay provider implementation and test-mode setup.
 
 ### Checkout and Webhooks
-- [ ] Implement Stripe checkout and webhook baseline.
-- [ ] Implement Razorpay checkout and webhook baseline.
-- [ ] Add webhook idempotency and replay safety checks.
+- [x] Implement Stripe checkout and webhook baseline.
+- [x] Implement Razorpay checkout and webhook baseline.
+- [x] Add webhook idempotency and replay safety checks.
 
 ### Subscription State and Enforcement
-- [ ] Persist provider events into internal subscription status model.
+- [x] Persist provider events into internal subscription status model.
 - [ ] Gate plan-limited actions by workspace subscription state.
 - [ ] Add clear UI messaging for plan-limited actions.
 
