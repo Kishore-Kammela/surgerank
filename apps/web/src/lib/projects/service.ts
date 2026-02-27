@@ -1,9 +1,16 @@
 import type { AuthContext, WorkspaceMembership } from "@/lib/auth/types";
-import { createWorkspaceProject, readWorkspaceProjects } from "@/lib/db/repositories/projects";
+import {
+  createWorkspaceProject,
+  deleteWorkspaceProject,
+  readWorkspaceProjects,
+  updateWorkspaceProjectName,
+} from "@/lib/db/repositories/projects";
 import type {
   CreateProjectInput,
   CreateProjectServiceResult,
+  ProjectMutationServiceResult,
   ProjectSummary,
+  UpdateProjectInput,
 } from "@/lib/projects/types";
 
 const canManageProjectRoles: Array<WorkspaceMembership["role"]> = ["owner", "admin"];
@@ -53,4 +60,72 @@ export const createProjectInActiveWorkspace = async (
   }
 
   return { ok: true, project };
+};
+
+export const updateProjectNameInActiveWorkspace = async (
+  auth: AuthContext,
+  input: UpdateProjectInput,
+): Promise<ProjectMutationServiceResult> => {
+  if (!auth.userId) {
+    return { ok: false, reason: "unauthenticated" };
+  }
+
+  if (!auth.activeAgencyId || !auth.activeWorkspaceId) {
+    return { ok: false, reason: "no_active_workspace" };
+  }
+
+  if (!canManageWorkspaceProjects(auth, auth.activeWorkspaceId)) {
+    return { ok: false, reason: "forbidden" };
+  }
+
+  const name = input.name.trim();
+  if (name.length < 2 || name.length > 80) {
+    return { ok: false, reason: "invalid_input" };
+  }
+
+  const updated = await updateWorkspaceProjectName(
+    auth.activeAgencyId,
+    auth.activeWorkspaceId,
+    input.projectId,
+    name,
+  );
+  if (updated === null) {
+    return { ok: false, reason: "db_unavailable" };
+  }
+  if (!updated) {
+    return { ok: false, reason: "not_found" };
+  }
+
+  return { ok: true };
+};
+
+export const deleteProjectInActiveWorkspace = async (
+  auth: AuthContext,
+  projectId: string,
+): Promise<ProjectMutationServiceResult> => {
+  if (!auth.userId) {
+    return { ok: false, reason: "unauthenticated" };
+  }
+
+  if (!auth.activeAgencyId || !auth.activeWorkspaceId) {
+    return { ok: false, reason: "no_active_workspace" };
+  }
+
+  if (!canManageWorkspaceProjects(auth, auth.activeWorkspaceId)) {
+    return { ok: false, reason: "forbidden" };
+  }
+
+  const deleted = await deleteWorkspaceProject(
+    auth.activeAgencyId,
+    auth.activeWorkspaceId,
+    projectId,
+  );
+  if (deleted === null) {
+    return { ok: false, reason: "db_unavailable" };
+  }
+  if (!deleted) {
+    return { ok: false, reason: "not_found" };
+  }
+
+  return { ok: true };
 };

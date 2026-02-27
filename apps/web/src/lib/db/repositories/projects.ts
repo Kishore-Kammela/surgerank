@@ -69,3 +69,59 @@ export const createWorkspaceProject = async (
     return null;
   }
 };
+
+export const updateWorkspaceProjectName = async (
+  agencyId: string,
+  workspaceId: string,
+  projectId: string,
+  name: string,
+): Promise<boolean | null> => {
+  const db = getDb();
+  if (!db) {
+    return null;
+  }
+
+  try {
+    const rows = await db
+      .update(projects)
+      .set({ name })
+      .where(
+        and(
+          eq(projects.agencyId, agencyId),
+          eq(projects.workspaceId, workspaceId),
+          eq(projects.id, projectId),
+        ),
+      )
+      .returning({ id: projects.id });
+    return rows.length > 0;
+  } catch {
+    return null;
+  }
+};
+
+export const deleteWorkspaceProject = async (
+  agencyId: string,
+  workspaceId: string,
+  projectId: string,
+): Promise<boolean | null> => {
+  const db = getDb();
+  if (!db) {
+    return null;
+  }
+
+  try {
+    const rows = await db
+      .delete(projects)
+      .where(
+        and(
+          eq(projects.agencyId, agencyId),
+          eq(projects.workspaceId, workspaceId),
+          eq(projects.id, projectId),
+        ),
+      )
+      .returning({ id: projects.id });
+    return rows.length > 0;
+  } catch {
+    return null;
+  }
+};
