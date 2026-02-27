@@ -98,10 +98,22 @@ export const upsertWorkspaceBillingSubscription = async (
   }
 };
 
-export const readWorkspaceBillingSubscription = async (workspaceId: string) => {
+export const readWorkspaceBillingSubscription = async (
+  workspaceId: string,
+): Promise<
+  | {
+      workspaceId: string;
+      provider: "stripe" | "razorpay";
+      status: string;
+      planCode: string | null;
+      currentPeriodEnd: Date | null;
+    }
+  | null
+  | "db_unavailable"
+> => {
   const db = getDb();
   if (!db) {
-    return null;
+    return "db_unavailable";
   }
 
   try {
@@ -118,6 +130,6 @@ export const readWorkspaceBillingSubscription = async (workspaceId: string) => {
       .limit(1);
     return rows[0] ?? null;
   } catch {
-    return null;
+    return "db_unavailable";
   }
 };
