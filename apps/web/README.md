@@ -18,6 +18,14 @@ bun run dev
 
 Open `http://localhost:3000`.
 
+## Environment Variables
+
+Create `apps/web/.env.local` from `apps/web/.env.example` and set:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
 ## Quality Commands
 
 ```bash
