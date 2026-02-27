@@ -19,6 +19,7 @@ Define the delivery pipeline for reliable, low-friction releases using GitHub, V
 ## Pipeline Components
 - CI workflow (lint, typecheck, test, build)
 - Security workflow (dependency and scanning checks)
+- PR routing workflow (auto-label by type/area/risk)
 - Migration workflow (dry-run, dev apply, prod apply)
 - Deploy workflows (web and worker)
 

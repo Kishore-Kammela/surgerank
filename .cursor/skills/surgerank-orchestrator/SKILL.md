@@ -1,6 +1,6 @@
 ---
 name: surgerank-orchestrator
-description: Meta-skill that routes SurgeRank work to the correct project skills based on task type, project phase, and risk level. Use when deciding which of the 15 SurgeRank skills to invoke for planning, documentation, implementation, quality, launch, and operations.
+description: Meta-skill that routes SurgeRank work to the correct project skills based on task type, project phase, and risk level. Use when deciding which of the 16 SurgeRank skills to invoke for planning, documentation, implementation, quality, launch, and operations.
 ---
 
 # SurgeRank Orchestrator
@@ -8,7 +8,7 @@ description: Meta-skill that routes SurgeRank work to the correct project skills
 ## Goal
 Select the right SurgeRank skill(s) for each task so execution stays fast, consistent, and scoped to V1.
 
-## Managed Skills (15)
+## Managed Skills (16)
 - `surgerank-cicd`
 - `surgerank-supabase-rls`
 - `surgerank-launch-ops`
@@ -24,6 +24,7 @@ Select the right SurgeRank skill(s) for each task so execution stays fast, consi
 - `surgerank-product-requirements`
 - `surgerank-project-management`
 - `surgerank-docs-ops`
+- `surgerank-code-review-quality`
 
 ## Primary Routing (Task Type -> Skill)
 
@@ -47,6 +48,7 @@ Select the right SurgeRank skill(s) for each task so execution stays fast, consi
 - Authz, secrets, webhook hardening, security controls -> `surgerank-security`
 - Event tracking, activation/retention metrics, KPI instrumentation -> `surgerank-product-analytics`
 - Beta operations, launch gates, partner rollout cadence -> `surgerank-launch-ops`
+- Major PR review, severity-based findings, quality scoring -> `surgerank-code-review-quality`
 
 ## Phase-Based Defaults
 - Discovery and scope definition:
@@ -54,7 +56,7 @@ Select the right SurgeRank skill(s) for each task so execution stays fast, consi
 - Build phase:
   - `surgerank-backend`, `surgerank-frontend`, `surgerank-ui`, `surgerank-supabase-rls`, `surgerank-cicd`
 - Stabilization phase:
-  - `surgerank-testing`, `surgerank-security`, `surgerank-qa`, `surgerank-product-analytics`
+  - `surgerank-testing`, `surgerank-security`, `surgerank-qa`, `surgerank-product-analytics`, `surgerank-code-review-quality`
 - Launch phase:
   - `surgerank-launch-ops`, `surgerank-project-management`, `surgerank-business-analysis`
 
@@ -65,6 +67,7 @@ Select the right SurgeRank skill(s) for each task so execution stays fast, consi
 4. If release is involved, always include `surgerank-cicd` and `surgerank-qa`.
 5. If scope changes are requested, include `surgerank-product-requirements` and `surgerank-project-management`.
 6. If docs are created or modified, include `surgerank-docs-ops` and update decision-log references where needed.
+7. For major changes, include `surgerank-code-review-quality` before merge decisions.
 
 ## Conflict Resolution
 - If speed and quality conflict, enforce launch-gate quality minimums.

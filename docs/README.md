@@ -53,7 +53,9 @@ Single entry point for V1 planning, execution, and stakeholder communication.
   - [`03-architecture/system-overview.md`](03-architecture/system-overview.md)
   - [`05-data-and-db/supabase-schema-plan.md`](05-data-and-db/supabase-schema-plan.md)
   - [`07-devops/cicd-architecture.md`](07-devops/cicd-architecture.md)
+  - [`07-devops/github-repo-security-setup-checklist.md`](07-devops/github-repo-security-setup-checklist.md)
   - [`06-quality/qa-test-plan.md`](06-quality/qa-test-plan.md)
+  - [`06-quality/security-review-report-template.md`](06-quality/security-review-report-template.md)
 
 ## Metadata Standard
 For major docs, include frontmatter fields:

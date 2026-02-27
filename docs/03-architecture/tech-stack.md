@@ -20,6 +20,7 @@ Engineering, PM, stakeholders.
 
 ## V1 Baseline Stack
 - Frontend: Next.js 16, TypeScript, Tailwind v4, shadcn/ui
+- Package manager and scripts: Bun
 - Backend: Next.js API routes/server actions + worker runtime
 - Data/Auth/Storage: Supabase
 - CI/CD: GitHub Actions

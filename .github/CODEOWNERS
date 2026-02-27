@@ -1,0 +1,15 @@
+# Solo phase owner.
+* @Kishore3420
+
+# Team phase (later): replace with org teams once available.
+# * @surgerank/engineering
+
+# Critical security and tenant-boundary surfaces
+commitlint.config.cjs @Kishore3420
+.github/workflows/* @Kishore3420
+docs/03-architecture/security-and-compliance-baseline.md @Kishore3420
+docs/05-data-and-db/** @Kishore3420
+
+# Application code ownership
+apps/web/src/** @Kishore3420
+apps/web/package.json @Kishore3420

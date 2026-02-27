@@ -16,11 +16,14 @@ Explain system design, stack decisions, and integration boundaries clearly.
 - `data-architecture-and-tenancy.md`
 - `integration-architecture.md`
 - `security-and-compliance-baseline.md`
+- `threat-model-lite.md`
 
 ## Key Docs
 - [`system-overview.md`](system-overview.md)
 - [`tech-stack.md`](tech-stack.md)
 - [`data-architecture-and-tenancy.md`](data-architecture-and-tenancy.md)
+- [`security-and-compliance-baseline.md`](security-and-compliance-baseline.md)
+- [`threat-model-lite.md`](threat-model-lite.md)
 
 ## Related Sections
 - Data and DB:

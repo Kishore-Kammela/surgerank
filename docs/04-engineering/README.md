@@ -15,11 +15,15 @@ Define practical implementation standards for backend, frontend, UI, and API con
 - `frontend-standards.md`
 - `ui-and-design-system.md`
 - `api-contract-guidelines.md`
+- `commit-and-pr-review-strategy.md`
+- `secure-coding-checklist.md`
 
 ## Key Docs
 - [`backend-standards.md`](backend-standards.md)
 - [`frontend-standards.md`](frontend-standards.md)
 - [`ui-and-design-system.md`](ui-and-design-system.md)
+- [`commit-and-pr-review-strategy.md`](commit-and-pr-review-strategy.md)
+- [`secure-coding-checklist.md`](secure-coding-checklist.md)
 
 ## Standard Outline For Each Document
 1. Purpose and audience

@@ -1,0 +1,123 @@
+name: pr auto label
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label:
+    name: label pull request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply labels by title and changed files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pull_number = context.payload.pull_request.number;
+            const title = (context.payload.pull_request.title || "").toLowerCase();
+
+            const wantedLabels = new Set();
+
+            // Type labels from conventional commit style titles.
+            if (/^feat\(/.test(title)) wantedLabels.add("type:feature");
+            if (/^fix\(/.test(title)) wantedLabels.add("type:bugfix");
+            if (/^docs\(/.test(title)) wantedLabels.add("type:docs");
+            if (/^(refactor|chore|build|ci)\(/.test(title)) wantedLabels.add("type:maintenance");
+            if (/^(perf)\(/.test(title)) wantedLabels.add("type:performance");
+            if (/hotfix|release/i.test(title)) wantedLabels.add("type:release-hotfix");
+
+            // Area labels from changed files.
+            const files = await github.paginate(
+              github.rest.pulls.listFiles,
+              { owner, repo, pull_number, per_page: 100 }
+            );
+            const paths = files.map((f) => f.filename);
+
+            const hasDocs = paths.some((p) => p.startsWith("docs/"));
+            const hasCI = paths.some((p) => p.startsWith(".github/workflows/"));
+            const hasSecurity =
+              paths.some((p) => p.includes("security")) ||
+              paths.some((p) => p.startsWith(".github/CODEOWNERS")) ||
+              paths.some((p) => p.startsWith(".github/dependabot.yml"));
+            const hasDb = paths.some(
+              (p) => p.startsWith("docs/05-data-and-db/") || p.includes("supabase") || p.includes("rls")
+            );
+            const hasFrontend = paths.some((p) => p.startsWith("apps/web/"));
+
+            if (hasDocs) wantedLabels.add("area:docs");
+            if (hasCI) wantedLabels.add("area:ci-cd");
+            if (hasSecurity) wantedLabels.add("area:security");
+            if (hasDb) wantedLabels.add("area:data-db");
+            if (hasFrontend) wantedLabels.add("area:frontend");
+
+            // Risk label by touched surface.
+            const highRiskPaths = [
+              ".github/workflows/",
+              "docs/03-architecture/security-and-compliance-baseline.md",
+              "docs/07-devops/",
+              "docs/05-data-and-db/",
+            ];
+            const highRisk = paths.some((p) => highRiskPaths.some((prefix) => p.startsWith(prefix)));
+            if (highRisk) wantedLabels.add("risk:high");
+
+            const labelsToEnsure = [
+              "type:feature",
+              "type:bugfix",
+              "type:docs",
+              "type:maintenance",
+              "type:performance",
+              "type:release-hotfix",
+              "area:docs",
+              "area:ci-cd",
+              "area:security",
+              "area:data-db",
+              "area:frontend",
+              "risk:high",
+            ];
+
+            const colors = {
+              "type:feature": "0e8a16",
+              "type:bugfix": "d73a4a",
+              "type:docs": "1d76db",
+              "type:maintenance": "6f42c1",
+              "type:performance": "5319e7",
+              "type:release-hotfix": "b60205",
+              "area:docs": "c5def5",
+              "area:ci-cd": "bfdadc",
+              "area:security": "b60205",
+              "area:data-db": "0b8f8f",
+              "area:frontend": "f9d0c4",
+              "risk:high": "d93f0b",
+            };
+
+            for (const name of labelsToEnsure) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name });
+              } catch (err) {
+                if (err.status === 404) {
+                  await github.rest.issues.createLabel({
+                    owner,
+                    repo,
+                    name,
+                    color: colors[name] || "ededed",
+                  });
+                } else {
+                  throw err;
+                }
+              }
+            }
+
+            if (wantedLabels.size > 0) {
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: pull_number,
+                labels: Array.from(wantedLabels),
+              });
+            }

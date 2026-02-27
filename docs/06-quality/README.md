@@ -14,11 +14,13 @@ Define testing, QA, and release readiness standards before shipping.
 - `testing-strategy.md`
 - `qa-test-plan.md`
 - `release-readiness-checklist.md`
+- `security-review-report-template.md`
 
 ## Key Docs
 - [`testing-strategy.md`](testing-strategy.md)
 - [`qa-test-plan.md`](qa-test-plan.md)
 - [`release-readiness-checklist.md`](release-readiness-checklist.md)
+- [`security-review-report-template.md`](security-review-report-template.md)
 
 ## Standard Outline For Each Document
 1. Purpose and audience

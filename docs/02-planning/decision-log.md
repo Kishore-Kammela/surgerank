@@ -34,6 +34,7 @@ All project roles.
 - V1 scope profile: balanced.
 - Launch model: design-partner first.
 - Stack baseline: Next.js + Tailwind + Supabase + Vercel + GitHub CI/CD.
+- Package manager baseline: Bun for install/run/build workflows.
 
 ## Scope Migration Decisions (2026-02-26)
 

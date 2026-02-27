@@ -65,3 +65,9 @@
 - Primary skill: `surgerank-docs-ops`
 - Supporting skills: `surgerank-product-requirements`, `surgerank-project-management`
 - Why: documentation governance + scope consistency + change-control alignment.
+
+## 12) Review Major Refactor PR
+- Task: Review a large refactor touching API, data access, and UI modules.
+- Primary skill: `surgerank-code-review-quality`
+- Supporting skills: `surgerank-security`, `surgerank-qa`, `surgerank-testing`
+- Why: severity-driven review framework + risk-focused validation before merge.
