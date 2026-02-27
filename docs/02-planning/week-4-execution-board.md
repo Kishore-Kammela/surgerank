@@ -52,7 +52,7 @@ Define Week 4 implementation for billing and plan enforcement using Stripe + Raz
 - [x] Add clear UI messaging for plan-limited actions.
 
 ### Quality and Ops
-- [ ] Add tests for webhook signature validation and failure handling.
+- [x] Add tests for webhook signature validation and failure handling.
 - [x] Run web tests in GitHub quality pipeline checks.
 - [ ] Add runbook entries for provider outages and event replay.
 - [ ] Update risk register with dual-provider operational risks.
