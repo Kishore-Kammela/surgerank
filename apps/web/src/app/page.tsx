@@ -1,12 +1,17 @@
+import { deleteProjectAction, updateProjectAction } from "@/app/actions/projects";
 import { getAuthContext } from "@/lib/auth/server-context";
 import { hasDatabaseUrl, hasSupabaseClientEnv } from "@/lib/env";
-import { readActiveWorkspaceProjects } from "@/lib/projects/service";
+import { canManageWorkspaceProjects, readActiveWorkspaceProjects } from "@/lib/projects/service";
 
 export default async function Home() {
   const auth = await getAuthContext();
   const signedIn = Boolean(auth.userId);
   const projects = await readActiveWorkspaceProjects(auth);
   const hasActiveWorkspace = Boolean(auth.activeAgencyId && auth.activeWorkspaceId);
+  const canManageActiveWorkspaceProjects =
+    hasActiveWorkspace &&
+    Boolean(auth.activeWorkspaceId) &&
+    canManageWorkspaceProjects(auth, auth.activeWorkspaceId ?? "");
 
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-16 text-zinc-900">
@@ -81,8 +86,42 @@ export default async function Home() {
             <ul className="mt-4 space-y-2 text-sm text-zinc-700">
               {projects.slice(0, 5).map((project) => (
                 <li key={project.id} className="rounded-md bg-zinc-100 px-3 py-2">
-                  <span className="font-medium">{project.name}</span>
-                  <span className="ml-2 text-zinc-500">({project.domain})</span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-medium">{project.name}</span>
+                    <span className="text-zinc-500">({project.domain})</span>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <form action={updateProjectAction} className="flex flex-wrap gap-2">
+                      <input type="hidden" name="projectId" value={project.id} />
+                      <input
+                        type="text"
+                        name="name"
+                        defaultValue={project.name}
+                        minLength={2}
+                        maxLength={80}
+                        required
+                        disabled={!canManageActiveWorkspaceProjects}
+                        className="rounded border border-zinc-300 bg-white px-2 py-1 text-xs"
+                      />
+                      <button
+                        type="submit"
+                        disabled={!canManageActiveWorkspaceProjects}
+                        className="rounded bg-zinc-800 px-2 py-1 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
+                      >
+                        Rename
+                      </button>
+                    </form>
+                    <form action={deleteProjectAction}>
+                      <input type="hidden" name="projectId" value={project.id} />
+                      <button
+                        type="submit"
+                        disabled={!canManageActiveWorkspaceProjects}
+                        className="rounded bg-red-600 px-2 py-1 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
+                      >
+                        Delete
+                      </button>
+                    </form>
+                  </div>
                 </li>
               ))}
             </ul>

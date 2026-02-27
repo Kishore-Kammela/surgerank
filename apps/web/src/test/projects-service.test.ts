@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import type { AuthContext } from "../lib/auth/types";
-import { canManageWorkspaceProjects } from "../lib/projects/service";
+import {
+  canManageWorkspaceProjects,
+  deleteProjectInActiveWorkspace,
+  updateProjectNameInActiveWorkspace,
+} from "../lib/projects/service";
 
 const baseAuth: AuthContext = {
   userId: "00000000-0000-0000-0000-0000000000aa",
@@ -38,5 +42,71 @@ describe("canManageWorkspaceProjects", () => {
     };
 
     expect(canManageWorkspaceProjects(auth, "workspace-1")).toBe(false);
+  });
+});
+
+describe("updateProjectNameInActiveWorkspace", () => {
+  it("returns unauthenticated when user is missing", async () => {
+    const auth: AuthContext = {
+      ...baseAuth,
+      userId: null,
+    };
+
+    const result = await updateProjectNameInActiveWorkspace(auth, {
+      projectId: "project-1",
+      name: "Renamed project",
+    });
+
+    expect(result).toEqual({ ok: false, reason: "unauthenticated" });
+  });
+
+  it("returns forbidden for member role", async () => {
+    const auth: AuthContext = {
+      ...baseAuth,
+      workspaceMemberships: [{ workspaceId: "workspace-1", agencyId: "agency-1", role: "member" }],
+    };
+
+    const result = await updateProjectNameInActiveWorkspace(auth, {
+      projectId: "project-1",
+      name: "Renamed project",
+    });
+
+    expect(result).toEqual({ ok: false, reason: "forbidden" });
+  });
+
+  it("returns invalid_input when name is too short", async () => {
+    const auth: AuthContext = {
+      ...baseAuth,
+      workspaceMemberships: [{ workspaceId: "workspace-1", agencyId: "agency-1", role: "owner" }],
+    };
+
+    const result = await updateProjectNameInActiveWorkspace(auth, {
+      projectId: "project-1",
+      name: "x",
+    });
+
+    expect(result).toEqual({ ok: false, reason: "invalid_input" });
+  });
+});
+
+describe("deleteProjectInActiveWorkspace", () => {
+  it("returns unauthenticated when user is missing", async () => {
+    const auth: AuthContext = {
+      ...baseAuth,
+      userId: null,
+    };
+
+    const result = await deleteProjectInActiveWorkspace(auth, "project-1");
+    expect(result).toEqual({ ok: false, reason: "unauthenticated" });
+  });
+
+  it("returns forbidden for member role", async () => {
+    const auth: AuthContext = {
+      ...baseAuth,
+      workspaceMemberships: [{ workspaceId: "workspace-1", agencyId: "agency-1", role: "member" }],
+    };
+
+    const result = await deleteProjectInActiveWorkspace(auth, "project-1");
+    expect(result).toEqual({ ok: false, reason: "forbidden" });
   });
 });

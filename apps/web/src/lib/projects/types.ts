@@ -19,3 +19,21 @@ export type CreateProjectServiceResult =
       ok: false;
       reason: "unauthenticated" | "no_active_workspace" | "forbidden" | "db_unavailable";
     };
+
+export type UpdateProjectInput = {
+  projectId: string;
+  name: string;
+};
+
+export type ProjectMutationServiceResult =
+  | { ok: true }
+  | {
+      ok: false;
+      reason:
+        | "unauthenticated"
+        | "no_active_workspace"
+        | "forbidden"
+        | "invalid_input"
+        | "not_found"
+        | "db_unavailable";
+    };
