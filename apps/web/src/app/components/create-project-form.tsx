@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 
 import { createProjectAction, initialProjectActionState } from "@/app/actions/projects";
@@ -42,13 +43,18 @@ export function CreateProjectForm({ canCreate }: CreateProjectFormProps) {
         {pending ? "Creating..." : "Create project"}
       </button>
       {state.message ? (
-        <p
-          className={`sm:col-span-3 text-sm ${
-            state.status === "error" ? "text-red-600" : "text-emerald-700"
-          }`}
-        >
-          {state.message}
-        </p>
+        <div className="sm:col-span-3 flex flex-wrap items-center gap-3">
+          <p
+            className={`text-sm ${state.status === "error" ? "text-red-600" : "text-emerald-700"}`}
+          >
+            {state.message}
+          </p>
+          {state.status === "error" && state.ctaHref && state.ctaLabel ? (
+            <Link href={state.ctaHref} className="text-sm font-medium text-zinc-800 underline">
+              {state.ctaLabel}
+            </Link>
+          ) : null}
+        </div>
       ) : null}
     </form>
   );
