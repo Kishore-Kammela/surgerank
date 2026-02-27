@@ -50,6 +50,12 @@ If hooks are not installed yet, run:
 bun run prepare
 ```
 
+If auto-install fails on your machine, run the fallback installer:
+
+```bash
+bun run hooks:install
+```
+
 ## Notes
 
 - Prefer Bun for all package and script operations.

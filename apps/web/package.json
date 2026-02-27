@@ -13,6 +13,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint-staged": "lint-staged",
+    "hooks:install": "bash ./scripts/install-hooks.sh",
     "commitlint:range": "bunx commitlint --config ../../commitlint.config.cjs --from origin/main --to HEAD",
     "prepush:check": "bun run commitlint:range && bun run lint && bun run typecheck && bun run test:run && bun run build",
     "prepare": "simple-git-hooks"

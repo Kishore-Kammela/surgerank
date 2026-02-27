@@ -28,6 +28,7 @@ module.exports = {
         "config",
         "deps",
         "ci",
+        "quality",
         "supabase",
         "db",
         "rls",
