@@ -1,19 +1,23 @@
 import { getAuthContext } from "@/lib/auth/server-context";
 import { hasSupabaseClientEnv } from "@/lib/env";
+import { readActiveWorkspaceProjects } from "@/lib/projects/service";
 
 export default async function Home() {
   const auth = await getAuthContext();
   const signedIn = Boolean(auth.userId);
+  const projects = await readActiveWorkspaceProjects(auth);
 
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-16 text-zinc-900">
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-10">
         <header className="space-y-3">
           <p className="text-sm font-medium uppercase tracking-wide text-zinc-500">SurgeRank</p>
-          <h1 className="text-3xl font-semibold tracking-tight">Week 2 Auth and Tenancy Wiring</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Week 3 Drizzle Service Layer Baseline
+          </h1>
           <p className="max-w-3xl text-zinc-600">
-            This baseline validates server-side Supabase session detection and tenant membership
-            loading.
+            This slice keeps auth and tenancy context from Week 2 and adds typed Drizzle repository
+            and service patterns for project data.
           </p>
           {!hasSupabaseClientEnv ? (
             <p className="max-w-3xl rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">
@@ -57,11 +61,30 @@ export default async function Home() {
         </section>
 
         <section className="rounded-xl border border-zinc-200 bg-white p-6">
+          <h2 className="text-lg font-semibold">Active workspace projects (Drizzle read path)</h2>
+          <p className="mt-2 text-sm text-zinc-500">Projects loaded: {projects.length}</p>
+          {projects.length > 0 ? (
+            <ul className="mt-4 space-y-2 text-sm text-zinc-700">
+              {projects.slice(0, 5).map((project) => (
+                <li key={project.id} className="rounded-md bg-zinc-100 px-3 py-2">
+                  <span className="font-medium">{project.name}</span>
+                  <span className="ml-2 text-zinc-500">({project.domain})</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-3 text-sm text-zinc-600">
+              No projects found yet for the active workspace, or `DATABASE_URL` is not configured.
+            </p>
+          )}
+        </section>
+
+        <section className="rounded-xl border border-zinc-200 bg-white p-6">
           <h2 className="text-lg font-semibold">Next implementation slice</h2>
           <ul className="mt-4 list-disc space-y-2 pl-5 text-zinc-700">
-            <li>Add Supabase auth sign-in page and callback route.</li>
-            <li>Persist selected agency/workspace in secure server-side context.</li>
-            <li>Gate tenant routes using loaded membership data.</li>
+            <li>Add server actions for create/update project using Drizzle service functions.</li>
+            <li>Apply workspace membership role gates before write operations.</li>
+            <li>Add project service tests for permission and failure scenarios.</li>
           </ul>
         </section>
       </main>
