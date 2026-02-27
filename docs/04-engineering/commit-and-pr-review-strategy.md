@@ -89,6 +89,8 @@ Major PRs must use:
   - high-risk label for security/CI/data-boundary touching changes
 - GitHub Actions workflow: `.github/workflows/release.yml`
   - tag-triggered release verification and GitHub Release publishing
+- GitHub Actions workflow: `.github/workflows/db-rls.yml`
+  - migration apply check + executable tenant isolation assertions
 - PR template: `.github/PULL_REQUEST_TEMPLATE.md`
 - PR template set: `.github/PULL_REQUEST_TEMPLATE/` (`feature.md`, `bugfix.md`, `refactor-chore.md`, `docs.md`, `release-hotfix.md`, `solo-self-review.md`)
 - Local hook automation in `apps/web/package.json` via `simple-git-hooks`:
