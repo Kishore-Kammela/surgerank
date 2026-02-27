@@ -1,7 +1,7 @@
 ---
 owner: PM
 status: active
-last_updated: 2026-02-26
+last_updated: 2026-02-27
 audience: pm, engineering, qa, stakeholders
 ---
 
@@ -14,6 +14,8 @@ Translate product scope into executable roadmap, milestones, and risks.
 - `roadmap-v1.md`
 - `week-1-execution-board.md`
 - `week-2-execution-board.md`
+- `week-3-architecture-decision-memo.md`
+- `week-4-execution-board.md`
 - `milestones-and-critical-path.md`
 - `risk-register.md`
 - `decision-log.md`
@@ -22,6 +24,8 @@ Translate product scope into executable roadmap, milestones, and risks.
 - [`roadmap-v1.md`](roadmap-v1.md)
 - [`week-1-execution-board.md`](week-1-execution-board.md)
 - [`week-2-execution-board.md`](week-2-execution-board.md)
+- [`week-3-architecture-decision-memo.md`](week-3-architecture-decision-memo.md)
+- [`week-4-execution-board.md`](week-4-execution-board.md)
 - [`risk-register.md`](risk-register.md)
 - [`decision-log.md`](decision-log.md)
 

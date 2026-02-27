@@ -1,7 +1,7 @@
 ---
 owner: PM
 status: active
-last_updated: 2026-02-26
+last_updated: 2026-02-27
 audience: all
 ---
 
@@ -53,6 +53,8 @@ All project roles.
 | AD-006 | Adopt Drizzle ORM as application query layer while keeping `supabase/migrations` as schema source of truth | Improve typed data access in app code without splitting migration ownership | Engineering | If migration/tooling friction appears between Drizzle schema and SQL migrations |
 | AD-007 | Integrate Stripe as V1 payment provider for subscription checkout, webhook sync, and plan enforcement | Fastest reliable path for recurring SaaS billing and customer portal flows | PM/Engineering | If regional payment requirements require additional providers |
 | AD-008 | Phase rollout: finish Week 2 auth/tenant baseline first, then implement Drizzle (Week 3) and payments (Week 4) | Reduces delivery risk by not combining auth, tenancy, and billing changes in one sprint | PM | If launch timeline or design-partner feedback requires reprioritization |
+| AD-009 | Defer TanStack Query + GraphQL adoption; continue server-action-first data flow for now | Current app is server-driven and still stabilizing core behavior; adding GraphQL/client-cache stack now increases complexity without immediate customer value | Engineering | Revisit when we have multi-client consumers or client-heavy data orchestration pain |
+| AD-010 | Use dual payment provider strategy: Stripe + Razorpay for India-first customer coverage | Indian SMB/agency audience often prefers local rails (UPI/cards/netbanking) while Stripe remains global baseline | PM/Engineering | Revisit if provider overlap creates high operational or reconciliation complexity |
 
 ## Required Decision Types
 - Scope and priority changes
