@@ -92,6 +92,12 @@ begin
   exception
     when insufficient_privilege then
       null;
+    when others then
+      if position('workspace' in SQLERRM) > 0 and position('not found' in SQLERRM) > 0 then
+        null;
+      else
+        raise;
+      end if;
   end;
 end
 $$;
