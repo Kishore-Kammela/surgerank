@@ -40,9 +40,9 @@ PM, engineering, QA, and stakeholders tracking week-1 progress.
 ## Workstream Backlog (Week 1)
 
 ### Platform and Codebase
-- [ ] Create project scaffold aligned with technical scope.
-- [ ] Configure linting, formatting, typecheck, and test commands.
-- [ ] Add standard README/setup instructions for contributors.
+- [x] Create project scaffold aligned with technical scope.
+- [x] Configure linting, formatting, typecheck, and test commands.
+- [x] Add standard README/setup instructions for contributors.
 
 ### Data and Tenancy
 - [ ] Implement base schema and migration pipeline.
@@ -50,7 +50,7 @@ PM, engineering, QA, and stakeholders tracking week-1 progress.
 - [ ] Create minimum policy tests and QA checks.
 
 ### Delivery and Operations
-- [ ] Add CI workflows and required status checks.
+- [x] Add CI workflows and required status checks.
 - [ ] Configure preview/development deployment flow.
 - [ ] Validate release and rollback runbook steps against baseline deploy.
 

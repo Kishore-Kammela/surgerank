@@ -16,7 +16,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Skip commitlint for Dependabot commits
+        if: github.actor == 'dependabot[bot]'
+        run: echo "Skipping commit message lint for Dependabot automated commits."
+
       - name: Validate commit messages
+        if: github.actor != 'dependabot[bot]'
         uses: wagoid/commitlint-github-action@v6
         with:
           configFile: commitlint.config.cjs
