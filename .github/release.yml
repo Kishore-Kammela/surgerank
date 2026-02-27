@@ -1,0 +1,23 @@
+changelog:
+  categories:
+    - title: Features
+      labels:
+        - type:feature
+    - title: Bug Fixes
+      labels:
+        - type:bugfix
+    - title: Security and Risk
+      labels:
+        - area:security
+        - risk:high
+    - title: CI/CD and Platform
+      labels:
+        - area:ci-cd
+        - type:maintenance
+    - title: Documentation
+      labels:
+        - area:docs
+        - type:docs
+    - title: Other Changes
+      labels:
+        - "*"

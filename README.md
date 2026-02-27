@@ -34,6 +34,7 @@ bun run build
 - Commit style: Conventional Commits
 - PR templates: `.github/PULL_REQUEST_TEMPLATE/`
 - Solo maintainer mode is currently active with strict CI/security checks
+- Tags/releases: push `v*.*.*` tags to trigger release workflow
 
 ## Key Docs
 
@@ -41,3 +42,4 @@ bun run build
 - Week 1 board: `docs/02-planning/week-1-execution-board.md`
 - Engineering review strategy: `docs/04-engineering/commit-and-pr-review-strategy.md`
 - Security setup checklist: `docs/07-devops/github-repo-security-setup-checklist.md`
+- Tags and releases: `docs/07-devops/tags-and-releases.md`

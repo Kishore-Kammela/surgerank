@@ -15,6 +15,7 @@ Document CI/CD architecture, environment management, and operational runbooks.
 - `environments-and-secrets.md`
 - `deployment-runbook.md`
 - `rollback-runbook.md`
+- `tags-and-releases.md`
 - `branch-protection-and-security-gates.md`
 - `github-repo-security-setup-checklist.md`
 - `incident-response-runbook.md`
@@ -25,6 +26,7 @@ Document CI/CD architecture, environment management, and operational runbooks.
 - [`cicd-architecture.md`](cicd-architecture.md)
 - [`environments-and-secrets.md`](environments-and-secrets.md)
 - [`deployment-runbook.md`](deployment-runbook.md)
+- [`tags-and-releases.md`](tags-and-releases.md)
 - [`branch-protection-and-security-gates.md`](branch-protection-and-security-gates.md)
 - [`github-repo-security-setup-checklist.md`](github-repo-security-setup-checklist.md)
 - [`incident-response-runbook.md`](incident-response-runbook.md)
