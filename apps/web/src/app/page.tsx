@@ -1,5 +1,6 @@
 import { CreateProjectForm } from "@/app/components/create-project-form";
 import { ProjectRowActions } from "@/app/components/project-row-actions";
+import Link from "next/link";
 import { getAuthContext } from "@/lib/auth/server-context";
 import { hasDatabaseUrl, hasSupabaseClientEnv } from "@/lib/env";
 import { canManageWorkspaceProjects, readActiveWorkspaceProjects } from "@/lib/projects/service";
@@ -84,6 +85,12 @@ export default async function Home() {
             </p>
           </div>
           <p className="mt-2 text-sm text-zinc-500">Projects loaded: {projects.length}</p>
+          <Link
+            href="/projects"
+            className="mt-2 inline-block text-sm font-medium text-zinc-700 underline"
+          >
+            Open projects dashboard
+          </Link>
           {projects.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-zinc-700">
               {projects.slice(0, 5).map((project) => (

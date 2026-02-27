@@ -2,6 +2,7 @@ import type { AuthContext, WorkspaceMembership } from "@/lib/auth/types";
 import {
   createWorkspaceProject,
   deleteWorkspaceProject,
+  readWorkspaceProjectsPage,
   readWorkspaceProjects,
   updateWorkspaceProjectName,
 } from "@/lib/db/repositories/projects";
@@ -9,6 +10,7 @@ import type {
   CreateProjectInput,
   CreateProjectServiceResult,
   ProjectMutationServiceResult,
+  ProjectsPageResult,
   ProjectSummary,
   UpdateProjectInput,
 } from "@/lib/projects/types";
@@ -36,6 +38,51 @@ export const readActiveWorkspaceProjects = async (auth: AuthContext): Promise<Pr
 
   const rows = await readWorkspaceProjects(auth.activeAgencyId, auth.activeWorkspaceId, 20);
   return rows ?? [];
+};
+
+export const readActiveWorkspaceProjectsPage = async (
+  auth: AuthContext,
+  page: number,
+  pageSize: number,
+): Promise<ProjectsPageResult> => {
+  const safePage = Math.max(1, page);
+  const safePageSize = Math.max(1, Math.min(pageSize, 50));
+
+  if (!auth.userId || !auth.activeAgencyId || !auth.activeWorkspaceId) {
+    return {
+      projects: [],
+      totalCount: 0,
+      page: safePage,
+      pageSize: safePageSize,
+      totalPages: 0,
+    };
+  }
+
+  const result = await readWorkspaceProjectsPage(
+    auth.activeAgencyId,
+    auth.activeWorkspaceId,
+    safePage,
+    safePageSize,
+  );
+
+  if (!result) {
+    return {
+      projects: [],
+      totalCount: 0,
+      page: safePage,
+      pageSize: safePageSize,
+      totalPages: 0,
+    };
+  }
+
+  const totalPages = result.totalCount === 0 ? 0 : Math.ceil(result.totalCount / safePageSize);
+  return {
+    projects: result.projects,
+    totalCount: result.totalCount,
+    page: safePage,
+    pageSize: safePageSize,
+    totalPages,
+  };
 };
 
 export const createProjectInActiveWorkspace = async (

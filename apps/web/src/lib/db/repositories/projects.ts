@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 
 import { getDb } from "@/lib/db/client";
 import { projects } from "@/lib/db/schema";
@@ -54,6 +54,51 @@ export const readWorkspaceProjects = async (
       .where(and(eq(projects.agencyId, agencyId), eq(projects.workspaceId, workspaceId)))
       .orderBy(desc(projects.createdAt))
       .limit(limit);
+  } catch {
+    return null;
+  }
+};
+
+export type WorkspaceProjectsPage = {
+  projects: ProjectSummary[];
+  totalCount: number;
+};
+
+export const readWorkspaceProjectsPage = async (
+  agencyId: string,
+  workspaceId: string,
+  page: number,
+  pageSize: number,
+): Promise<WorkspaceProjectsPage | null> => {
+  const db = getDb();
+  if (!db) {
+    return null;
+  }
+
+  const safePage = Math.max(1, page);
+  const safePageSize = Math.max(1, Math.min(pageSize, 50));
+  const offset = (safePage - 1) * safePageSize;
+  const scope = and(eq(projects.agencyId, agencyId), eq(projects.workspaceId, workspaceId));
+
+  try {
+    const [rows, counts] = await Promise.all([
+      db
+        .select(projectSelect)
+        .from(projects)
+        .where(scope)
+        .orderBy(desc(projects.createdAt))
+        .limit(safePageSize)
+        .offset(offset),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(projects)
+        .where(scope),
+    ]);
+
+    return {
+      projects: rows,
+      totalCount: counts[0]?.count ?? 0,
+    };
   } catch {
     return null;
   }
