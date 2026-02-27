@@ -27,7 +27,7 @@ jobs:
           configFile: commitlint.config.cjs
 
   web-quality:
-    name: web lint test and build
+    name: web lint and build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
