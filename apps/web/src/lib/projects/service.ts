@@ -14,6 +14,13 @@ import type {
 } from "@/lib/projects/types";
 
 const canManageProjectRoles: Array<WorkspaceMembership["role"]> = ["owner", "admin"];
+const DOMAIN_PATTERN = /^[a-z0-9.-]+\.[a-z]{2,}$/i;
+
+const normalizeDomain = (domain: string): string => {
+  const trimmed = domain.trim().toLowerCase();
+  const withoutProtocol = trimmed.replace(/^https?:\/\//, "");
+  return withoutProtocol.split("/")[0] ?? "";
+};
 
 export const canManageWorkspaceProjects = (auth: AuthContext, workspaceId: string): boolean => {
   return auth.workspaceMemberships.some(
@@ -47,12 +54,18 @@ export const createProjectInActiveWorkspace = async (
     return { ok: false, reason: "forbidden" };
   }
 
+  const name = input.name.trim();
+  const domain = normalizeDomain(input.domain);
+  if (name.length < 2 || name.length > 80 || !DOMAIN_PATTERN.test(domain)) {
+    return { ok: false, reason: "invalid_input" };
+  }
+
   const project = await createWorkspaceProject({
     agencyId: auth.activeAgencyId,
     workspaceId: auth.activeWorkspaceId,
     createdBy: auth.userId,
-    name: input.name,
-    domain: input.domain,
+    name,
+    domain,
   });
 
   if (!project) {
