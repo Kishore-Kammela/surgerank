@@ -13,6 +13,7 @@ Translate product scope into executable roadmap, milestones, and risks.
 ## Planned Documents
 - `roadmap-v1.md`
 - `week-1-execution-board.md`
+- `week-2-execution-board.md`
 - `milestones-and-critical-path.md`
 - `risk-register.md`
 - `decision-log.md`
@@ -20,6 +21,7 @@ Translate product scope into executable roadmap, milestones, and risks.
 ## Key Docs
 - [`roadmap-v1.md`](roadmap-v1.md)
 - [`week-1-execution-board.md`](week-1-execution-board.md)
+- [`week-2-execution-board.md`](week-2-execution-board.md)
 - [`risk-register.md`](risk-register.md)
 - [`decision-log.md`](decision-log.md)
 
