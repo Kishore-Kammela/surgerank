@@ -40,7 +40,7 @@ on conflict (workspace_id, user_id) do nothing;
 set role authenticated;
 
 -- user_a: same-tenant visibility and cross-tenant denial
-select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-0000000000aa', true);
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-0000000000aa', false);
 
 do $$
 declare
