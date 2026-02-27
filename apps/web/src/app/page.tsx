@@ -1,12 +1,18 @@
+import { CreateProjectForm } from "@/app/components/create-project-form";
 import { getAuthContext } from "@/lib/auth/server-context";
 import { hasDatabaseUrl, hasSupabaseClientEnv } from "@/lib/env";
-import { readActiveWorkspaceProjects } from "@/lib/projects/service";
+import { canManageWorkspaceProjects, readActiveWorkspaceProjects } from "@/lib/projects/service";
 
 export default async function Home() {
   const auth = await getAuthContext();
   const signedIn = Boolean(auth.userId);
   const projects = await readActiveWorkspaceProjects(auth);
   const hasActiveWorkspace = Boolean(auth.activeAgencyId && auth.activeWorkspaceId);
+  const canCreateProject =
+    hasDatabaseUrl &&
+    hasActiveWorkspace &&
+    Boolean(auth.activeWorkspaceId) &&
+    canManageWorkspaceProjects(auth, auth.activeWorkspaceId ?? "");
 
   return (
     <div className="min-h-screen bg-zinc-50 px-6 py-16 text-zinc-900">
@@ -97,14 +103,21 @@ export default async function Home() {
                     : "No projects found yet in the active workspace."}
             </p>
           )}
+
+          <div className="mt-6 border-t border-zinc-200 pt-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-600">
+              Create project (server action)
+            </h3>
+            <CreateProjectForm canCreate={canCreateProject} />
+          </div>
         </section>
 
         <section className="rounded-xl border border-zinc-200 bg-white p-6">
           <h2 className="text-lg font-semibold">Next implementation slice</h2>
           <ul className="mt-4 list-disc space-y-2 pl-5 text-zinc-700">
-            <li>Add server actions for create/update project using Drizzle service functions.</li>
-            <li>Apply workspace membership role gates before write operations.</li>
-            <li>Add project service tests for permission and failure scenarios.</li>
+            <li>Add update/delete server actions for project lifecycle changes.</li>
+            <li>Add optimistic UI feedback and action retry handling.</li>
+            <li>Expand tests for project input validation and create action outcomes.</li>
           </ul>
         </section>
       </main>
