@@ -105,6 +105,43 @@ Provide a clear, low-friction process to detect, contain, communicate, and remed
 - Tighten alert threshold if detection lagged.
 - Track all preventive tasks to completion in weekly security review.
 
+## Billing Provider Outage and Event Replay
+
+### Trigger Conditions (Billing-Specific)
+- Checkout creation fails repeatedly for a single provider (Stripe or Razorpay).
+- Webhook delivery failures spike or webhook retry backlog grows.
+- Subscription state in app diverges from provider dashboard for active workspaces.
+
+### Immediate Response (0-30 Minutes)
+- Declare incident with category `operational` and severity based on customer impact.
+- Identify impacted provider (`stripe` or `razorpay`) and affected regions/workspaces.
+- Freeze non-essential billing changes and notify stakeholders of degraded path.
+- Switch user messaging in `/billing` and support channels to indicate provider degradation.
+
+### Containment (30-120 Minutes)
+- Keep alternate provider path available where possible for new checkouts.
+- Pause risky manual edits to `billing_subscriptions` unless IC-approved.
+- Capture evidence:
+  - provider status page incident links
+  - failed request/webhook examples (sanitized)
+  - affected workspace IDs and timestamps
+
+### Replay Procedure (Post-Recovery)
+1. Confirm provider recovery and webhook delivery stability.
+2. Build replay window from outage start/end timestamps.
+3. Re-send provider events for impacted window (provider dashboard or API).
+4. Verify idempotency behavior (`billing_events` duplicate-safe writes).
+5. Reconcile sampled workspaces:
+   - provider subscription status
+   - internal `billing_subscriptions` status
+   - plan enforcement behavior in app
+6. Publish reconciliation summary with any manual corrections made.
+
+### Exit Criteria
+- New checkouts succeed for the impacted provider.
+- Replay completed with no unresolved subscription mismatches.
+- Stakeholder update sent with incident timeline and residual actions.
+
 ## Definition of Done (Incident Closed)
 - Containment completed and verified.
 - Permanent fix deployed and monitored.
