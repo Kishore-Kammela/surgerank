@@ -83,7 +83,7 @@ Major PRs must use:
 - `commitlint.config.cjs` in repo root for commit standards.
 - GitHub Actions workflow: `.github/workflows/quality.yml`
   - commitlint enforcement on PRs and `main`
-  - Bun-based lint + build checks for `apps/web`
+  - Bun-based format + lint + build checks for `apps/web`
 - GitHub Actions workflow: `.github/workflows/pr-auto-label.yml`
   - automatic PR type/area labels based on title and changed files
   - high-risk label for security/CI/data-boundary touching changes
