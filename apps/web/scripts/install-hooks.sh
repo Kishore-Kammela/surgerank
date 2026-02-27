@@ -21,8 +21,12 @@ EOF
 cat > "$HOOKS_DIR/commit-msg" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
+MSG_FILE="$1"
+if [[ "$MSG_FILE" != /* ]]; then
+  MSG_FILE="$(git rev-parse --show-toplevel)/$MSG_FILE"
+fi
 cd apps/web
-bunx commitlint --config ../../commitlint.config.cjs --edit "$1"
+bunx commitlint --config ./commitlint.config.cjs --edit "$MSG_FILE"
 EOF
 
 cat > "$HOOKS_DIR/pre-push" <<'EOF'
