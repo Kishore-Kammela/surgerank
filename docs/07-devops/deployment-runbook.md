@@ -27,6 +27,18 @@ Engineering, DevOps, on-call operators.
 5. Run post-deploy smoke checks.
 6. Monitor error/latency and queue health.
 
+## Preview Deployment (PR Flow)
+1. Open PR targeting `main`.
+2. Ensure Vercel secrets are configured in GitHub:
+   - `VERCEL_TOKEN`
+   - `VERCEL_ORG_ID`
+   - `VERCEL_PROJECT_ID`
+3. Wait for `.github/workflows/vercel-preview.yml` to run.
+4. Open the preview URL posted by the workflow comment.
+5. Execute PR smoke checks on preview before merge.
+
+If secrets are missing, the workflow reports a clear skipped reason instead of failing the PR.
+
 ## Detailed Checks Per Step
 - Migration:
   - verify dry-run success reference

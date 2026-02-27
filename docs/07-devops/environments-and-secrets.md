@@ -43,6 +43,30 @@ Engineering, DevOps, security.
 - CI/CD deployment tokens
 - Monitoring and alerting webhooks
 
+## Vercel Integration Secrets (GitHub)
+
+| Secret | Where Used | Notes |
+| --- | --- | --- |
+| `VERCEL_TOKEN` | `.github/workflows/vercel-preview.yml`, `.github/workflows/release.yml` (future deploy hook) | Personal/team token with deploy access |
+| `VERCEL_ORG_ID` | `.github/workflows/vercel-preview.yml` | Vercel org/team identifier |
+| `VERCEL_PROJECT_ID` | `.github/workflows/vercel-preview.yml` | Vercel project identifier for `apps/web` |
+
+## Vercel Environment Variable Baseline
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` (server-only)
+- Any external provider keys required by active integrations
+
+Preview and production values must be managed separately in Vercel environment settings.
+
+## How to Get Vercel IDs
+1. Run `vercel link` inside `apps/web`.
+2. Open generated `.vercel/project.json` locally.
+3. Copy:
+   - `orgId` -> `VERCEL_ORG_ID`
+   - `projectId` -> `VERCEL_PROJECT_ID`
+4. Create a Vercel access token in Vercel account settings and store as `VERCEL_TOKEN`.
+
 ## Rotation Policy
 - High-risk keys: quarterly rotation baseline.
 - Incident-triggered immediate rotation when compromise is suspected.

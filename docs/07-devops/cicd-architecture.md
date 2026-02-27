@@ -20,8 +20,9 @@ Define the delivery pipeline for reliable, low-friction releases using GitHub, V
 - CI workflow (lint, typecheck, test, build)
 - Security workflow (dependency and scanning checks)
 - PR routing workflow (auto-label by type/area/risk)
+- DB/RLS workflow (migration apply + tenant isolation assertions)
 - Migration workflow (dry-run, dev apply, prod apply)
-- Deploy workflows (web and worker)
+- Deploy workflows (Vercel preview + release-tagged publish)
 
 ## Branch and Environment Model
 - `feature/*` -> pull request validation
@@ -36,6 +37,18 @@ Define the delivery pipeline for reliable, low-friction releases using GitHub, V
 - `develop` for non-prod flow.
 - `main` for production.
 - Separate secrets by environment.
+- Preview deploys are PR-triggered through `.github/workflows/vercel-preview.yml` when Vercel secrets are configured.
+
+## Current GitHub Workflows
+
+| Workflow | Purpose | Trigger |
+| --- | --- | --- |
+| `.github/workflows/quality.yml` | commit policy + web lint/build gate | PRs and pushes to `main` |
+| `.github/workflows/security.yml` | dependency/security scanning baseline | PRs, pushes to `main`, weekly |
+| `.github/workflows/db-rls.yml` | migration apply + executable RLS assertions | PRs and pushes to `main` |
+| `.github/workflows/pr-auto-label.yml` | PR routing labels | PR lifecycle events |
+| `.github/workflows/vercel-preview.yml` | PR preview deployment to Vercel | PRs to `main` |
+| `.github/workflows/release.yml` | tagged/manual release verification + GitHub Release | `v*.*.*` tags and manual dispatch |
 
 ## Required Release Gates
 - All required checks are green.

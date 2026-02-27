@@ -26,6 +26,11 @@ Engineering, DevOps, incident responders.
 4. Pause risky background jobs if needed.
 5. Verify system health and critical flows.
 
+## Vercel-Specific Rollback Notes
+- If production deploy is from a release tag, redeploy the prior stable tag commit.
+- If issue is detected during PR validation, close/revert PR without promoting preview to production.
+- Maintain a short mapping of `release tag -> deployed Vercel URL` in release notes for fast recovery.
+
 ## Rollback Validation
 - API health endpoint stable.
 - Authentication and dashboard access restored.
