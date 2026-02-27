@@ -35,3 +35,14 @@ export const workspaceMemberships = pgTable("workspace_memberships", {
   role: text("role").$type<"owner" | "admin" | "member">().notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
 });
+
+export const projects = pgTable("projects", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  agencyId: uuid("agency_id").notNull(),
+  workspaceId: uuid("workspace_id").notNull(),
+  name: text("name").notNull(),
+  domain: text("domain").notNull(),
+  createdBy: uuid("created_by").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
