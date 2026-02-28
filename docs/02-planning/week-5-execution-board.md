@@ -47,9 +47,9 @@ Define Week 5 execution to close monetization readiness in a Razorpay-first setu
 - [x] Add operator note for enabling Stripe later without breaking Razorpay flow.
 
 ### Reconciliation and Reliability
-- [ ] Document recurring reconciliation cadence (daily during pilot, weekly post-pilot).
-- [ ] Add drift detection checklist between provider state and `billing_subscriptions`.
-- [ ] Define owner and SLA for resolving mismatched subscription states.
+- [x] Document recurring reconciliation cadence (daily during pilot, weekly post-pilot).
+- [x] Add drift detection checklist between provider state and `billing_subscriptions`.
+- [x] Define owner and SLA for resolving mismatched subscription states.
 
 ### Core Integrations (Scope Realignment)
 - [ ] Finalize GSC onboarding flow requirements (connect, property select, consent copy).
