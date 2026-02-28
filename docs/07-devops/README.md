@@ -1,7 +1,7 @@
 ---
 owner: Engineering
 status: active
-last_updated: 2026-02-26
+last_updated: 2026-02-28
 audience: engineering, devops, pm, qa
 ---
 
@@ -19,6 +19,7 @@ Document CI/CD architecture, environment management, and operational runbooks.
 - `branch-protection-and-security-gates.md`
 - `github-repo-security-setup-checklist.md`
 - `incident-response-runbook.md`
+- `billing-reconciliation-runbook.md`
 - `security-exception-register.md`
 - `security-operations-weekly-rhythm.md`
 
@@ -30,6 +31,7 @@ Document CI/CD architecture, environment management, and operational runbooks.
 - [`branch-protection-and-security-gates.md`](branch-protection-and-security-gates.md)
 - [`github-repo-security-setup-checklist.md`](github-repo-security-setup-checklist.md)
 - [`incident-response-runbook.md`](incident-response-runbook.md)
+- [`billing-reconciliation-runbook.md`](billing-reconciliation-runbook.md)
 - [`security-exception-register.md`](security-exception-register.md)
 - [`security-operations-weekly-rhythm.md`](security-operations-weekly-rhythm.md)
 
