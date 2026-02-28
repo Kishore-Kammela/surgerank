@@ -1,6 +1,6 @@
 ---
 owner: PM
-status: active
+status: completed
 last_updated: 2026-02-27
 audience: pm, engineering, qa, stakeholders
 ---

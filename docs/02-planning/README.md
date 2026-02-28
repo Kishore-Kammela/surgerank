@@ -16,6 +16,7 @@ Translate product scope into executable roadmap, milestones, and risks.
 - `week-2-execution-board.md`
 - `week-3-architecture-decision-memo.md`
 - `week-4-execution-board.md`
+- `week-5-execution-board.md`
 - `milestones-and-critical-path.md`
 - `risk-register.md`
 - `decision-log.md`
@@ -26,6 +27,7 @@ Translate product scope into executable roadmap, milestones, and risks.
 - [`week-2-execution-board.md`](week-2-execution-board.md)
 - [`week-3-architecture-decision-memo.md`](week-3-architecture-decision-memo.md)
 - [`week-4-execution-board.md`](week-4-execution-board.md)
+- [`week-5-execution-board.md`](week-5-execution-board.md)
 - [`risk-register.md`](risk-register.md)
 - [`decision-log.md`](decision-log.md)
 

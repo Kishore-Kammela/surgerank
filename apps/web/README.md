@@ -20,23 +20,28 @@ Open `http://localhost:3000`.
 
 ## Environment Variables
 
-Create `apps/web/.env.local` from `apps/web/.env.example` and set:
+Create `apps/web/.env.local` from `apps/web/.env.example`.
+
+Set these required variables now (Razorpay-first mode):
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `DATABASE_URL` (for Drizzle query layer)
-- `STRIPE_SECRET_KEY`
-- `STRIPE_WEBHOOK_SECRET`
-- `STRIPE_PRICE_ID_STARTER`
-- `STRIPE_PRICE_ID_PRO`
-- `STRIPE_PRICE_ID_SCALE`
 - `RAZORPAY_KEY_ID`
 - `RAZORPAY_KEY_SECRET`
 - `RAZORPAY_WEBHOOK_SECRET`
 - `RAZORPAY_PLAN_AMOUNT_STARTER_INR` (minor unit, paise)
 - `RAZORPAY_PLAN_AMOUNT_PRO_INR` (minor unit, paise)
 - `RAZORPAY_PLAN_AMOUNT_SCALE_INR` (minor unit, paise)
+
+Keep these optional Stripe variables empty until your Stripe account is available:
+
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_PRICE_ID_STARTER`
+- `STRIPE_PRICE_ID_PRO`
+- `STRIPE_PRICE_ID_SCALE`
 
 ### Week 4 Billing Endpoints (Baseline)
 
