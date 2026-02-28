@@ -97,6 +97,12 @@ export default async function Home() {
           >
             Open billing
           </Link>
+          <Link
+            href="/integrations/gsc"
+            className="mt-2 ml-4 inline-block text-sm font-medium text-zinc-700 underline"
+          >
+            Open GSC integration
+          </Link>
           {projects.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-zinc-700">
               {projects.slice(0, 5).map((project) => (

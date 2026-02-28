@@ -58,5 +58,5 @@ Define the technical slice for Google Search Console (GSC) onboarding and first 
 - [x] Initial data contract defined.
 - [x] Security constraints documented.
 - [x] API/action boundary identified.
-- [ ] Concrete schema migration file drafted.
-- [ ] Worker job implementation PR opened.
+- [x] Concrete schema migration file drafted.
+- [x] Worker job implementation scaffold prepared in Week 6 baseline branch.

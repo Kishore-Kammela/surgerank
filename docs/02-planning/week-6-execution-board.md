@@ -37,8 +37,8 @@ Execute the first GSC value slice: OAuth onboarding, property binding, and initi
 ## Workstream Backlog (Week 6)
 
 ### GSC Connection
-- [ ] Implement OAuth start/callback endpoints.
-- [ ] Enforce signed state and workspace-scoped validation.
+- [x] Implement OAuth start/callback endpoints.
+- [x] Enforce signed state and workspace-scoped validation.
 - [ ] Persist connection metadata securely.
 
 ### Property Binding
