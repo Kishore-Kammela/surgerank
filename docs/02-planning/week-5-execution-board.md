@@ -52,9 +52,9 @@ Define Week 5 execution to close monetization readiness in a Razorpay-first setu
 - [x] Define owner and SLA for resolving mismatched subscription states.
 
 ### Core Integrations (Scope Realignment)
-- [ ] Finalize GSC onboarding flow requirements (connect, property select, consent copy).
-- [ ] Define initial ingestion contract and storage touchpoints.
-- [ ] Prepare Week 6 implementation board for GSC-first data value slice.
+- [x] Finalize GSC onboarding flow requirements (connect, property select, consent copy).
+- [x] Define initial ingestion contract and storage touchpoints.
+- [x] Prepare Week 6 implementation board for GSC-first data value slice.
 
 ### Quality and Governance
 - [ ] Update decision log with Razorpay-first temporary provider strategy.
