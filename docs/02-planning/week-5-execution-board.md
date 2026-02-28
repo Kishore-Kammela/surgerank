@@ -37,14 +37,14 @@ Define Week 5 execution to close monetization readiness in a Razorpay-first setu
 ## Workstream Backlog (Week 5)
 
 ### Billing Lifecycle and UX
-- [ ] Improve `/billing` manage-plan state messaging and action clarity.
+- [x] Improve `/billing` manage-plan state messaging and action clarity.
 - [ ] Add explicit fallback behavior for `db_unavailable` and sync-delay states.
-- [ ] Confirm project gating and upgrade CTA behavior remains consistent after state changes.
+- [x] Confirm project gating and upgrade CTA behavior remains consistent after state changes.
 
 ### Razorpay-First Operations
 - [ ] Validate all required Razorpay env variables in local + preview.
-- [ ] Keep Stripe path optional and non-blocking while account invite is pending.
-- [ ] Add operator note for enabling Stripe later without breaking Razorpay flow.
+- [x] Keep Stripe path optional and non-blocking while account invite is pending.
+- [x] Add operator note for enabling Stripe later without breaking Razorpay flow.
 
 ### Reconciliation and Reliability
 - [ ] Document recurring reconciliation cadence (daily during pilot, weekly post-pilot).
@@ -94,3 +94,8 @@ Define Week 5 execution to close monetization readiness in a Razorpay-first setu
 - Billing lifecycle messaging is clear for users and operators.
 - Reconciliation workflow is documented and assigned.
 - Week 6 board is ready for GSC implementation start.
+
+## Operator Note: Stripe Auto-Activation
+- Client UI remains Razorpay-first while Stripe is not configured.
+- Stripe actions stay hidden from client-facing billing UI unless Stripe env variables are present.
+- When Stripe credentials and price IDs are added, Stripe options auto-appear without code changes.
