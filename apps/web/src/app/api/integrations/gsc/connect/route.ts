@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 
 import { getAuthContext } from "@/lib/auth/server-context";
-import { createSignedGscOauthState, buildGscCallbackUrl } from "@/lib/integrations/gsc/oauth-state";
+import {
+  buildGscCallbackUrl,
+  createGscOauthContextCookieValue,
+  createGscOauthStateToken,
+} from "@/lib/integrations/gsc/oauth-state";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { serverEnv } from "@/lib/env";
 
 const GSC_SCOPE = "https://www.googleapis.com/auth/webmasters.readonly";
+const GSC_OAUTH_CONTEXT_COOKIE = "gsc_oauth_context";
+const GSC_STATE_MAX_AGE_SECONDS = 15 * 60;
 
 export async function GET(request: Request) {
   const auth = await getAuthContext();
@@ -28,20 +33,13 @@ export async function GET(request: Request) {
     );
   }
 
-  if (!serverEnv.SUPABASE_SERVICE_ROLE_KEY) {
-    return NextResponse.redirect(
-      new URL("/integrations/gsc?status=missing_server_secret", request.url),
-    );
-  }
-
-  const stateToken = createSignedGscOauthState(
-    {
-      workspaceId,
-      userId: auth.userId,
-      issuedAtMs: Date.now(),
-    },
-    serverEnv.SUPABASE_SERVICE_ROLE_KEY,
-  );
+  const stateToken = createGscOauthStateToken();
+  const contextCookieValue = createGscOauthContextCookieValue({
+    token: stateToken,
+    workspaceId,
+    userId: auth.userId,
+    issuedAtMs: Date.now(),
+  });
 
   const callbackUrl = buildGscCallbackUrl(requestUrl.origin, stateToken);
   const supabase = await createSupabaseServerClient();
@@ -63,5 +61,15 @@ export async function GET(request: Request) {
     );
   }
 
-  return NextResponse.redirect(data.url);
+  const response = NextResponse.redirect(data.url);
+  response.cookies.set({
+    name: GSC_OAUTH_CONTEXT_COOKIE,
+    value: contextCookieValue,
+    httpOnly: true,
+    sameSite: "lax",
+    secure: requestUrl.protocol === "https:",
+    path: "/",
+    maxAge: GSC_STATE_MAX_AGE_SECONDS,
+  });
+  return response;
 }
