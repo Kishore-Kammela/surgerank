@@ -156,20 +156,22 @@ export function PlanCheckoutButtons({
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={startStripeCheckout}
-          disabled={!stripeConfigured || pending !== null || isCurrentPlan}
-          className="rounded bg-zinc-900 px-3 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
-        >
-          {isCurrentPlan
-            ? "Current plan"
-            : pending === "stripe"
-              ? "Starting Stripe..."
-              : preferredProvider === "stripe"
-                ? "Upgrade with Stripe (preferred)"
-                : "Upgrade with Stripe"}
-        </button>
+        {stripeConfigured ? (
+          <button
+            type="button"
+            onClick={startStripeCheckout}
+            disabled={pending !== null || isCurrentPlan}
+            className="rounded bg-zinc-900 px-3 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
+          >
+            {isCurrentPlan
+              ? "Current plan"
+              : pending === "stripe"
+                ? "Starting Stripe..."
+                : preferredProvider === "stripe"
+                  ? "Upgrade with Stripe (preferred)"
+                  : "Upgrade with Stripe"}
+          </button>
+        ) : null}
         <button
           type="button"
           onClick={startRazorpayCheckout}
@@ -185,6 +187,16 @@ export function PlanCheckoutButtons({
                 : "Upgrade with Razorpay"}
         </button>
       </div>
+      {!stripeConfigured && razorpayConfigured ? (
+        <p className="text-xs text-zinc-600">
+          Stripe is currently unavailable for this workspace. Razorpay is active for upgrades.
+        </p>
+      ) : null}
+      {!stripeConfigured && !razorpayConfigured ? (
+        <p className="text-xs text-amber-700">
+          No billing provider is configured yet. Add provider credentials to enable upgrades.
+        </p>
+      ) : null}
       {statusMessage ? <p className="text-xs text-zinc-700">{statusMessage}</p> : null}
     </div>
   );

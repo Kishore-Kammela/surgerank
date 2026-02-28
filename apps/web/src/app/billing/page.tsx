@@ -66,13 +66,30 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
           <div>
             <h1 className="text-xl font-semibold text-zinc-900">Billing</h1>
             <p className="text-sm text-zinc-600">
-              Upgrade and manage your workspace plan with Stripe or Razorpay.
+              Upgrade and manage your workspace plan with a Razorpay-first billing flow.
             </p>
           </div>
           <Link href="/" className="text-sm text-zinc-700 underline">
             Back to dashboard
           </Link>
         </div>
+        {!stripeConfigured && razorpayConfigured ? (
+          <p className="mt-4 rounded border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
+            Razorpay is currently the active checkout provider. Stripe will appear automatically
+            once configured.
+          </p>
+        ) : null}
+        {!razorpayConfigured && stripeConfigured ? (
+          <p className="mt-4 rounded border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
+            Stripe is active for checkout. Razorpay is not configured for this environment.
+          </p>
+        ) : null}
+        {!razorpayConfigured && !stripeConfigured ? (
+          <p className="mt-4 rounded border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            No checkout provider is configured. Add Razorpay (or Stripe) credentials to enable paid
+            plan upgrades.
+          </p>
+        ) : null}
 
         {checkoutStatusMessage ? (
           <p className="mt-4 rounded border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
