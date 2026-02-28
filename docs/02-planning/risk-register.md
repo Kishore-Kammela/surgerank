@@ -1,7 +1,7 @@
 ---
 owner: PM
 status: active
-last_updated: 2026-02-27
+last_updated: 2026-02-28
 audience: pm, engineering, stakeholders
 ---
 
@@ -46,6 +46,14 @@ PM, engineering, QA, stakeholders.
 | RISK-W4-002 | Operational risk | Razorpay outage impacts India-first customers and delays subscription activation. | Medium | High | High | Engineering | Keep Stripe fallback for supported accounts, retry webhook processing, and track failed order creation metrics. | Provide temporary assisted activation workflow and replay failed events after recovery. | Active | 2026-03-01 |
 | RISK-W4-003 | Technical risk | Event ordering/retry differences between providers cause stale internal subscription state. | Medium | High | High | Engineering + QA | Enforce idempotent event persistence and add reconciliation checks for `billing_subscriptions` drift. | Run bounded replay + manual reconciliation for mismatched workspaces. | Active | 2026-03-01 |
 | RISK-W4-004 | Commercial risk | Pricing/plan mapping drift between provider configs leads to wrong tier activation. | Low | High | Medium | PM + Engineering | Lock config review checklist for price IDs/amounts per environment and require dual review before changes. | Freeze affected plan, correct mapping, and notify impacted customers with compensation path. | Active | 2026-03-01 |
+
+## Week 5 Integration and Operational Risks
+
+| Risk ID | Category | Description | Likelihood | Impact | Severity | Owner | Mitigation | Contingency | Status | Review date |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| RISK-W5-001 | Delivery risk | GSC OAuth flow instability delays Week 6 integration milestone. | Medium | High | High | Engineering | Add signed state validation tests, deterministic callback handling, and preview validation checklist. | Disable integration entry in UI temporarily and keep billing-only scope until callback reliability is restored. | Active | 2026-03-07 |
+| RISK-W5-002 | Technical risk | Tenant scope leakage in integration binding exposes wrong workspace data. | Low | High | High | Engineering + QA | Enforce workspace membership checks on connect/callback/property actions and add targeted tests. | Roll back integration routes and run access log review before re-enable. | Active | 2026-03-07 |
+| RISK-W5-003 | Operational risk | Incomplete env validation across local/preview causes checkout or integration regressions. | Medium | Medium | Medium | Engineering | Maintain required env checklist in docs and validate during weekly release gate. | Block merge for affected slices until env checklist and smoke checks pass. | Active | 2026-03-07 |
 
 ## Active Risk Categories
 - Product risk

@@ -38,11 +38,11 @@ Define Week 5 execution to close monetization readiness in a Razorpay-first setu
 
 ### Billing Lifecycle and UX
 - [x] Improve `/billing` manage-plan state messaging and action clarity.
-- [ ] Add explicit fallback behavior for `db_unavailable` and sync-delay states.
+- [x] Add explicit fallback behavior for `db_unavailable` and sync-delay states.
 - [x] Confirm project gating and upgrade CTA behavior remains consistent after state changes.
 
 ### Razorpay-First Operations
-- [ ] Validate all required Razorpay env variables in local + preview.
+- [x] Validate all required Razorpay env variables in local + preview.
 - [x] Keep Stripe path optional and non-blocking while account invite is pending.
 - [x] Add operator note for enabling Stripe later without breaking Razorpay flow.
 
@@ -57,9 +57,9 @@ Define Week 5 execution to close monetization readiness in a Razorpay-first setu
 - [x] Prepare Week 6 implementation board for GSC-first data value slice.
 
 ### Quality and Governance
-- [ ] Update decision log with Razorpay-first temporary provider strategy.
-- [ ] Update risk register with Week 5 integration + operational risks.
-- [ ] Confirm quality gates remain green on all Week 5 PRs.
+- [x] Update decision log with Razorpay-first temporary provider strategy.
+- [x] Update risk register with Week 5 integration + operational risks.
+- [x] Confirm quality gates remain green on all Week 5 PRs.
 
 ## Razorpay-First Environment Baseline
 

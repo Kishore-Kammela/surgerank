@@ -1,7 +1,7 @@
 ---
 owner: PM
 status: active
-last_updated: 2026-02-27
+last_updated: 2026-02-28
 audience: all
 ---
 
@@ -55,6 +55,7 @@ All project roles.
 | AD-008 | Phase rollout: finish Week 2 auth/tenant baseline first, then implement Drizzle (Week 3) and payments (Week 4) | Reduces delivery risk by not combining auth, tenancy, and billing changes in one sprint | PM | If launch timeline or design-partner feedback requires reprioritization |
 | AD-009 | Defer TanStack Query + GraphQL adoption; continue server-action-first data flow for now | Current app is server-driven and still stabilizing core behavior; adding GraphQL/client-cache stack now increases complexity without immediate customer value | Engineering | Revisit when we have multi-client consumers or client-heavy data orchestration pain |
 | AD-010 | Use dual payment provider strategy: Stripe + Razorpay for India-first customer coverage | Indian SMB/agency audience often prefers local rails (UPI/cards/netbanking) while Stripe remains global baseline | PM/Engineering | Revisit if provider overlap creates high operational or reconciliation complexity |
+| AD-011 | Run Razorpay-first client UX with Stripe auto-activation behind env configuration | Stripe onboarding availability is uncertain for India entities; hiding Stripe until configured avoids user confusion while preserving rapid future enablement | PM/Engineering | Revisit when Stripe account access is available and production-validated |
 
 ## Required Decision Types
 - Scope and priority changes

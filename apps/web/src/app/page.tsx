@@ -21,12 +21,10 @@ export default async function Home() {
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-10">
         <header className="space-y-3">
           <p className="text-sm font-medium uppercase tracking-wide text-zinc-500">SurgeRank</p>
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Week 4 Billing + Plan Enforcement
-          </h1>
+          <h1 className="text-3xl font-semibold tracking-tight">Week 6 GSC OAuth Baseline</h1>
           <p className="max-w-3xl text-zinc-600">
-            This slice keeps auth and tenancy context from Week 2 and adds typed Drizzle repository
-            and service patterns for project data.
+            This slice adds secure Google Search Console onboarding flow foundations with signed
+            workspace-aware OAuth state handling.
           </p>
           {!hasSupabaseClientEnv ? (
             <p className="max-w-3xl rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">
@@ -97,6 +95,12 @@ export default async function Home() {
           >
             Open billing
           </Link>
+          <Link
+            href="/integrations/gsc"
+            className="mt-2 ml-4 inline-block text-sm font-medium text-zinc-700 underline"
+          >
+            Open GSC integration
+          </Link>
           {projects.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-zinc-700">
               {projects.slice(0, 5).map((project) => (
@@ -135,9 +139,9 @@ export default async function Home() {
         <section className="rounded-xl border border-zinc-200 bg-white p-6">
           <h2 className="text-lg font-semibold">Next implementation slice</h2>
           <ul className="mt-4 list-disc space-y-2 pl-5 text-zinc-700">
-            <li>Persist checkout return state and improve billing UX feedback.</li>
-            <li>Add subscription management actions (cancel/resume/portal) per provider.</li>
-            <li>Add webhook-focused tests for normalized billing events and idempotency.</li>
+            <li>List verified GSC properties for connected workspaces.</li>
+            <li>Add property binding action with tenant-safe validation checks.</li>
+            <li>Wire initial sync run creation and status visibility for integrations.</li>
           </ul>
         </section>
       </main>

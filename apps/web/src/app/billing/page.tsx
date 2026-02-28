@@ -46,6 +46,7 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
   const razorpayConfigured = providerHealth.some(
     (item) => item.provider === "razorpay" && item.configured,
   );
+  const configuredProviders = providerHealth.filter((item) => item.configured);
 
   const currentSubscription = workspaceId
     ? await readWorkspaceBillingSubscription(workspaceId)
@@ -66,7 +67,7 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
           <div>
             <h1 className="text-xl font-semibold text-zinc-900">Billing</h1>
             <p className="text-sm text-zinc-600">
-              Upgrade and manage your workspace plan with a Razorpay-first billing flow.
+              Upgrade and manage your workspace plan with secure Razorpay checkout.
             </p>
           </div>
           <Link href="/" className="text-sm text-zinc-700 underline">
@@ -75,19 +76,18 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
         </div>
         {!stripeConfigured && razorpayConfigured ? (
           <p className="mt-4 rounded border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
-            Razorpay is currently the active checkout provider. Stripe will appear automatically
-            once configured.
+            Razorpay is currently active for paid plan upgrades.
           </p>
         ) : null}
         {!razorpayConfigured && stripeConfigured ? (
           <p className="mt-4 rounded border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
-            Stripe is active for checkout. Razorpay is not configured for this environment.
+            A checkout provider is active for this environment.
           </p>
         ) : null}
         {!razorpayConfigured && !stripeConfigured ? (
           <p className="mt-4 rounded border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-            No checkout provider is configured. Add Razorpay (or Stripe) credentials to enable paid
-            plan upgrades.
+            No checkout provider is configured. Add provider credentials to enable paid plan
+            upgrades.
           </p>
         ) : null}
 
@@ -155,12 +155,17 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
       <section className="rounded border border-zinc-200 bg-white p-6 shadow-sm">
         <h2 className="text-base font-semibold text-zinc-900">Provider health</h2>
         <ul className="mt-2 space-y-1 text-sm text-zinc-700">
-          {providerHealth.map((item) => (
+          {configuredProviders.map((item) => (
             <li key={item.provider}>
-              {item.provider}: {item.configured ? "configured" : "missing config"} - {item.message}
+              {item.provider}: configured - {item.message}
             </li>
           ))}
         </ul>
+        {configuredProviders.length === 0 ? (
+          <p className="mt-2 text-sm text-zinc-600">
+            No provider configured yet for this environment.
+          </p>
+        ) : null}
         <p className="mt-2 text-xs text-zinc-600">Preferred provider: {preferredProvider}</p>
       </section>
 
