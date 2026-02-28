@@ -189,7 +189,7 @@ export function PlanCheckoutButtons({
       </div>
       {!stripeConfigured && razorpayConfigured ? (
         <p className="text-xs text-zinc-600">
-          Stripe is currently unavailable for this workspace. Razorpay is active for upgrades.
+          Additional providers are currently unavailable for this workspace.
         </p>
       ) : null}
       {!stripeConfigured && !razorpayConfigured ? (
