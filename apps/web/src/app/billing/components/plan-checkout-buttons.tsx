@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { isCurrentActivePlan } from "@/lib/billing/subscription-state";
 import type { BillingProvider } from "@/lib/billing/types";
 
 type PlanCheckoutButtonsProps = {
@@ -12,6 +13,8 @@ type PlanCheckoutButtonsProps = {
   preferredProvider: BillingProvider;
   stripeConfigured: boolean;
   razorpayConfigured: boolean;
+  currentPlanCode?: string | null;
+  currentStatus?: string | null;
 };
 
 type RazorpayResponse = {
@@ -54,9 +57,16 @@ export function PlanCheckoutButtons({
   preferredProvider,
   stripeConfigured,
   razorpayConfigured,
+  currentPlanCode,
+  currentStatus,
 }: PlanCheckoutButtonsProps) {
   const [statusMessage, setStatusMessage] = useState("");
   const [pending, setPending] = useState<"stripe" | "razorpay" | null>(null);
+  const isCurrentPlan = isCurrentActivePlan({
+    currentPlanCode,
+    currentStatus,
+    targetPlanCode: planCode,
+  });
 
   const startStripeCheckout = async () => {
     try {
@@ -149,26 +159,30 @@ export function PlanCheckoutButtons({
         <button
           type="button"
           onClick={startStripeCheckout}
-          disabled={!stripeConfigured || pending !== null}
+          disabled={!stripeConfigured || pending !== null || isCurrentPlan}
           className="rounded bg-zinc-900 px-3 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
         >
-          {pending === "stripe"
-            ? "Starting Stripe..."
-            : preferredProvider === "stripe"
-              ? "Upgrade with Stripe (preferred)"
-              : "Upgrade with Stripe"}
+          {isCurrentPlan
+            ? "Current plan"
+            : pending === "stripe"
+              ? "Starting Stripe..."
+              : preferredProvider === "stripe"
+                ? "Upgrade with Stripe (preferred)"
+                : "Upgrade with Stripe"}
         </button>
         <button
           type="button"
           onClick={startRazorpayCheckout}
-          disabled={!razorpayConfigured || pending !== null}
+          disabled={!razorpayConfigured || pending !== null || isCurrentPlan}
           className="rounded bg-zinc-900 px-3 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-zinc-500"
         >
-          {pending === "razorpay"
-            ? "Starting Razorpay..."
-            : preferredProvider === "razorpay"
-              ? "Upgrade with Razorpay (preferred)"
-              : "Upgrade with Razorpay"}
+          {isCurrentPlan
+            ? "Current plan"
+            : pending === "razorpay"
+              ? "Starting Razorpay..."
+              : preferredProvider === "razorpay"
+                ? "Upgrade with Razorpay (preferred)"
+                : "Upgrade with Razorpay"}
         </button>
       </div>
       {statusMessage ? <p className="text-xs text-zinc-700">{statusMessage}</p> : null}

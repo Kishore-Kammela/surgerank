@@ -3,6 +3,10 @@ import Link from "next/link";
 import { PlanCheckoutButtons } from "@/app/billing/components/plan-checkout-buttons";
 import { getAuthContext } from "@/lib/auth/server-context";
 import { readBillingProviderHealth, resolvePreferredProvider } from "@/lib/billing/provider";
+import {
+  buildCheckoutStatusMessage,
+  deriveBillingSubscriptionViewState,
+} from "@/lib/billing/subscription-state";
 import { readWorkspaceBillingSubscription } from "@/lib/db/repositories/billing";
 
 const plans = [
@@ -46,6 +50,14 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
   const currentSubscription = workspaceId
     ? await readWorkspaceBillingSubscription(workspaceId)
     : null;
+  const checkoutStatusMessage = buildCheckoutStatusMessage({
+    status: params.status,
+    provider: params.provider,
+  });
+  const currentViewState =
+    currentSubscription && currentSubscription !== "db_unavailable"
+      ? deriveBillingSubscriptionViewState(currentSubscription.status)
+      : "unknown";
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 p-8">
@@ -62,10 +74,9 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
           </Link>
         </div>
 
-        {params.status ? (
+        {checkoutStatusMessage ? (
           <p className="mt-4 rounded border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
-            Checkout status: <span className="font-medium">{params.status}</span>
-            {params.provider ? ` via ${params.provider}` : ""}.
+            {checkoutStatusMessage}
           </p>
         ) : null}
       </section>
@@ -81,23 +92,40 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
             Billing database is unavailable. Check `DATABASE_URL` and database connectivity.
           </p>
         ) : currentSubscription ? (
-          <div className="mt-2 grid gap-2 text-sm text-zinc-700 sm:grid-cols-2">
-            <p>
-              Plan: <span className="font-medium">{currentSubscription.planCode ?? "unknown"}</span>
+          <div className="mt-2 space-y-3 text-sm text-zinc-700">
+            <p className="rounded border border-zinc-200 bg-zinc-50 px-3 py-2">
+              {currentViewState === "active"
+                ? "Subscription is active. Premium plan limits should be available."
+                : currentViewState === "pending"
+                  ? "Subscription update is pending. Webhook sync may take a moment."
+                  : currentViewState === "cancelled"
+                    ? "Subscription is cancelled or paused. Upgrade to restore premium limits."
+                    : currentViewState === "past_due"
+                      ? "Billing is past due. Complete payment to restore active access."
+                      : "Subscription status is unknown. Refresh after webhook sync."}
             </p>
-            <p>
-              Status: <span className="font-medium">{currentSubscription.status}</span>
-            </p>
-            <p>
-              Provider: <span className="font-medium">{currentSubscription.provider}</span>
-            </p>
-            <p>
-              Current period end:{" "}
-              <span className="font-medium">
-                {currentSubscription.currentPeriodEnd
-                  ? currentSubscription.currentPeriodEnd.toISOString()
-                  : "n/a"}
-              </span>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <p>
+                Plan:{" "}
+                <span className="font-medium">{currentSubscription.planCode ?? "unknown"}</span>
+              </p>
+              <p>
+                Status: <span className="font-medium">{currentSubscription.status}</span>
+              </p>
+              <p>
+                Provider: <span className="font-medium">{currentSubscription.provider}</span>
+              </p>
+              <p>
+                Current period end:{" "}
+                <span className="font-medium">
+                  {currentSubscription.currentPeriodEnd
+                    ? currentSubscription.currentPeriodEnd.toISOString()
+                    : "n/a"}
+                </span>
+              </p>
+            </div>
+            <p className="text-xs text-zinc-600">
+              Need a status refresh? Re-open this page after provider webhook delivery.
             </p>
           </div>
         ) : (
@@ -138,6 +166,16 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
                     preferredProvider={preferredProvider}
                     stripeConfigured={stripeConfigured}
                     razorpayConfigured={razorpayConfigured}
+                    currentPlanCode={
+                      currentSubscription && currentSubscription !== "db_unavailable"
+                        ? currentSubscription.planCode
+                        : null
+                    }
+                    currentStatus={
+                      currentSubscription && currentSubscription !== "db_unavailable"
+                        ? currentSubscription.status
+                        : null
+                    }
                   />
                 </div>
               </article>
