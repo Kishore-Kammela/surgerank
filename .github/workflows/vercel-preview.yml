@@ -4,6 +4,11 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 permissions:
   contents: read
   pull-requests: write
@@ -11,7 +16,7 @@ permissions:
 jobs:
   preview:
     name: deploy vercel preview
-    if: ${{ secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
+    if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_ORG_ID != '' && env.VERCEL_PROJECT_ID != '' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -29,19 +34,16 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Pull Vercel environment
-        run: vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
+        run: vercel pull --yes --environment=preview --token="${{ env.VERCEL_TOKEN }}"
 
       - name: Build preview artifacts
-        run: vercel build --token="${{ secrets.VERCEL_TOKEN }}"
+        run: vercel build --token="${{ env.VERCEL_TOKEN }}"
 
       - name: Deploy to Vercel preview
         id: deploy
         run: |
-          DEPLOY_URL="$(vercel deploy --prebuilt --token="${{ secrets.VERCEL_TOKEN }}")"
+          DEPLOY_URL="$(vercel deploy --prebuilt --token="${{ env.VERCEL_TOKEN }}")"
           echo "url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Comment preview URL
         uses: actions/github-script@v8
@@ -63,7 +65,7 @@ jobs:
 
   preview-missing-secrets:
     name: preview skipped (missing vercel secrets)
-    if: ${{ secrets.VERCEL_TOKEN == '' || secrets.VERCEL_ORG_ID == '' || secrets.VERCEL_PROJECT_ID == '' }}
+    if: ${{ env.VERCEL_TOKEN == '' || env.VERCEL_ORG_ID == '' || env.VERCEL_PROJECT_ID == '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Explain skip reason
