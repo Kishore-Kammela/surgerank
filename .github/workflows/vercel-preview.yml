@@ -12,9 +12,6 @@ jobs:
   preview:
     name: deploy vercel preview
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/web
     steps:
       - name: Check Vercel secret availability
         id: vercel-secrets
@@ -46,15 +43,18 @@ jobs:
 
       - name: Pull Vercel environment
         if: ${{ steps.vercel-secrets.outputs.available == 'true' }}
+        working-directory: apps/web
         run: vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Build preview artifacts
         if: ${{ steps.vercel-secrets.outputs.available == 'true' }}
+        working-directory: apps/web
         run: vercel build --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Deploy to Vercel preview
         if: ${{ steps.vercel-secrets.outputs.available == 'true' }}
         id: deploy
+        working-directory: apps/web
         run: |
           DEPLOY_URL="$(vercel deploy --prebuilt --token="${{ secrets.VERCEL_TOKEN }}")"
           echo "url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
