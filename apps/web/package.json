@@ -19,7 +19,7 @@
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.8.0",
+    "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.98.0",
     "drizzle-orm": "^0.45.1",
     "next": "16.1.6",
