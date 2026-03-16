@@ -41,7 +41,7 @@
     "drizzle-kit": "^0.31.9",
     "eslint": "^10",
     "eslint-config-next": "16.1.6",
-    "jsdom": "^28",
+    "jsdom": "^29",
     "lint-staged": "^16",
     "prettier": "^3",
     "simple-git-hooks": "^2",
