@@ -40,13 +40,13 @@
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.9",
     "eslint": "^10",
-    "eslint-config-next": "16.1.6",
-    "jsdom": "^28",
+    "eslint-config-next": "16.2.1",
+    "jsdom": "^29",
     "lint-staged": "^16",
     "prettier": "^3",
     "simple-git-hooks": "^2",
     "tailwindcss": "^4",
-    "typescript": "^5",
+    "typescript": "^6",
     "vitest": "^4"
   },
   "lint-staged": {
