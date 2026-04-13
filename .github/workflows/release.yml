@@ -120,7 +120,7 @@ jobs:
     needs: [prepare, verify]
     steps:
       - name: Publish release from tag
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
           generate_release_notes: true
