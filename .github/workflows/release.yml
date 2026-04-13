@@ -42,7 +42,7 @@ jobs:
       - name: Create tag from workflow dispatch
         id: set-dispatch
         if: github.event_name == 'workflow_dispatch'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const version = "${{ inputs.version }}".trim();
